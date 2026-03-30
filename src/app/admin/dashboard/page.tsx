@@ -124,10 +124,13 @@ export default function AdminDashboard() {
                     </Button>
                   </TableCell>
                   <TableCell className="text-right px-8 space-x-1">
-                    <Button size="icon" variant="ghost" className="rounded-full" asChild>
+                    <Button size="icon" variant="ghost" className="rounded-full" asChild title="View on Site">
                       <Link href={`/inventory/${v.id}`} target="_blank"><ExternalLink className="w-4 h-4" /></Link>
                     </Button>
-                    <Button size="icon" variant="ghost" className="text-destructive hover:bg-destructive/10 rounded-full" onClick={() => deleteVehicle(v.id)}>
+                    <Button size="icon" variant="ghost" className="rounded-full text-blue-600 hover:bg-blue-50" asChild title="Edit Vehicle">
+                      <Link href={`/admin/vehicles/edit/${v.id}`}><Pencil className="w-4 h-4" /></Link>
+                    </Button>
+                    <Button size="icon" variant="ghost" className="text-destructive hover:bg-destructive/10 rounded-full" onClick={() => deleteVehicle(v.id)} title="Delete Vehicle">
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </TableCell>
