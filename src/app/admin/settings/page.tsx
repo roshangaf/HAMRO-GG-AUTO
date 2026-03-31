@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,23 +10,25 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Settings, Save, Loader2, Image as ImageIcon, Store, Mail, Phone, MapPin, Upload, X } from 'lucide-react';
+import { Settings, Save, Loader2, Image as ImageIcon, Store, Mail, Phone, MapPin, Upload, X, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 const settingsSchema = z.object({
   logo_url: z.string().min(1, "Logo is required"),
-  business_name: z.string().min(3),
-  contact_phone: z.string().min(10),
-  contact_email: z.string().email(),
-  address: z.string().min(5),
+  business_name: z.string().min(3, "Business name must be at least 3 characters"),
+  contact_phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  contact_email: z.string().email("Invalid email address"),
+  address: z.string().min(5, "Address must be at least 5 characters"),
   hero_image_url: z.string().min(1, "Hero image is required"),
   service_image_url: z.string().min(1, "Service image is required"),
 });
 
 export default function SettingsPage() {
   const db = useFirestore();
+  const { user } = useUser();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
   
@@ -35,7 +37,14 @@ export default function SettingsPage() {
     return doc(db, 'settings', 'general');
   }, [db]);
 
+  const roleRef = useMemoFirebase(() => {
+    if (!db || !user?.uid) return null;
+    return doc(db, 'roles_admin', user.uid);
+  }, [db, user?.uid]);
+
   const { data: settings, isLoading } = useDoc(settingsRef);
+  const { data: roleData } = useDoc(roleRef);
+  const isSuperAdmin = roleData?.role === 'super_admin';
 
   const form = useForm<z.infer<typeof settingsSchema>>({
     resolver: zodResolver(settingsSchema),
@@ -81,11 +90,12 @@ export default function SettingsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 800 * 1024) {
+    // Reduced limit to 250KB to stay within Firestore 1MB doc limit when storing multiple base64 strings
+    if (file.size > 250 * 1024) {
       toast({
         variant: "destructive",
         title: "File too large",
-        description: "Please upload an image smaller than 800KB."
+        description: "Please upload an image smaller than 250KB to ensure site stability."
       });
       return;
     }
@@ -93,7 +103,7 @@ export default function SettingsPage() {
     try {
       const base64 = await fileToBase64(file);
       form.setValue(fieldName, base64, { shouldValidate: true });
-      toast({ title: "Ready to save", description: "Click 'Save All Settings' to apply." });
+      toast({ title: "Image Ready", description: "The new asset has been prepared." });
     } catch (err) {
       toast({ variant: "destructive", title: "Upload Failed", description: "Could not process image." });
     }
@@ -101,16 +111,41 @@ export default function SettingsPage() {
 
   function onSubmit(values: z.infer<typeof settingsSchema>) {
     if (!db) return;
+    if (!isSuperAdmin) {
+      toast({ variant: "destructive", title: "Access Denied", description: "Only Super Admins can modify global settings." });
+      return;
+    }
+    
     setIsSaving(true);
     
     const docRef = doc(db, 'settings', 'general');
     setDocumentNonBlocking(docRef, values, { merge: true });
     
-    setIsSaving(false);
-    toast({ 
-      title: "Settings Saved", 
-      description: "Configurations have been pushed to the live site." 
-    });
+    // Simulate slight delay for UX
+    setTimeout(() => {
+      setIsSaving(false);
+      toast({ 
+        title: "Settings Saved", 
+        description: "Configurations have been pushed to the live site." 
+      });
+    }, 500);
+  }
+
+  if (!isSuperAdmin && !isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-6">
+        <div className="bg-red-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto border-4 border-white shadow-sm">
+          <ShieldAlert className="w-12 h-12 text-red-500" />
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold font-headline">Access Restricted</h1>
+          <p className="text-muted-foreground">You must have Super Admin privileges to manage site settings.</p>
+        </div>
+        <Button variant="outline" asChild className="rounded-full px-8">
+          <Link href="/admin/dashboard">Return to Dashboard</Link>
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -138,7 +173,7 @@ export default function SettingsPage() {
                   <TabsList className="bg-transparent gap-8">
                     <TabsTrigger value="showroom" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Showroom</TabsTrigger>
                     <TabsTrigger value="branding" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Branding & Images</TabsTrigger>
-                    <TabsTrigger value="contact" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Contact & Gmail</TabsTrigger>
+                    <TabsTrigger value="contact" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Contact Details</TabsTrigger>
                   </TabsList>
                 </div>
 
@@ -196,11 +231,11 @@ export default function SettingsPage() {
                               <div className="space-y-4">
                                 <div className="flex gap-4 items-center">
                                   <div className="flex-1">
-                                    <Input placeholder="URL or Base64" className="h-12 rounded-xl bg-gray-50 focus:bg-white text-xs" {...field} />
+                                    <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-gray-100 text-xs" value={field.value ? "Image Uploaded (Base64 Content)" : ""} />
                                   </div>
                                   <label className="h-12 px-6 rounded-xl border-2 border-dashed border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold">
-                                    <Upload className="w-4 h-4" /> Upload JPEG/PNG
-                                    <input type="file" className="hidden" accept="image/jpeg,image/png,image/svg+xml" onChange={(e) => handleFileUpload(e, 'logo_url')} />
+                                    <Upload className="w-4 h-4" /> Upload Logo
+                                    <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'logo_url')} />
                                   </label>
                                 </div>
                                 {field.value && (
@@ -213,7 +248,7 @@ export default function SettingsPage() {
                                 )}
                               </div>
                             </FormControl>
-                            <FormDescription>Recommended: Square logo. It will be displayed as a circle across the site.</FormDescription>
+                            <FormDescription>Square logo (max 250KB). Displayed as a circle across the site.</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -224,15 +259,15 @@ export default function SettingsPage() {
                         name="hero_image_url"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Hero Section Image</FormLabel>
+                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Hero Banner Image</FormLabel>
                             <FormControl>
                               <div className="space-y-4">
                                 <div className="flex gap-4 items-center">
                                   <div className="flex-1">
-                                    <Input placeholder="URL or Base64" className="h-12 rounded-xl bg-gray-50 focus:bg-white text-xs" {...field} />
+                                    <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-gray-100 text-xs" value={field.value ? "Image Uploaded (Base64 Content)" : ""} />
                                   </div>
                                   <label className="h-12 px-6 rounded-xl border-2 border-dashed border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold">
-                                    <Upload className="w-4 h-4" /> Upload JPEG/PNG
+                                    <Upload className="w-4 h-4" /> Upload Hero
                                     <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'hero_image_url')} />
                                   </label>
                                 </div>
@@ -246,7 +281,7 @@ export default function SettingsPage() {
                                 )}
                               </div>
                             </FormControl>
-                            <FormDescription>Main banner image on the homepage.</FormDescription>
+                            <FormDescription>Main homepage banner (max 250KB).</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -257,15 +292,15 @@ export default function SettingsPage() {
                         name="service_image_url"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Maintenance Section Image</FormLabel>
+                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Maintenance Image</FormLabel>
                             <FormControl>
                               <div className="space-y-4">
                                 <div className="flex gap-4 items-center">
                                   <div className="flex-1">
-                                    <Input placeholder="URL or Base64" className="h-12 rounded-xl bg-gray-50 focus:bg-white text-xs" {...field} />
+                                    <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-gray-100 text-xs" value={field.value ? "Image Uploaded (Base64 Content)" : ""} />
                                   </div>
                                   <label className="h-12 px-6 rounded-xl border-2 border-dashed border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold">
-                                    <Upload className="w-4 h-4" /> Upload JPEG/PNG
+                                    <Upload className="w-4 h-4" /> Upload Asset
                                     <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'service_image_url')} />
                                   </label>
                                 </div>
@@ -279,7 +314,7 @@ export default function SettingsPage() {
                                 )}
                               </div>
                             </FormControl>
-                            <FormDescription>Image shown next to the service booking section.</FormDescription>
+                            <FormDescription>Maintenance section asset (max 250KB).</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -291,7 +326,7 @@ export default function SettingsPage() {
                     <div className="space-y-6">
                       <div className="flex items-center gap-2 border-b pb-4">
                         <Mail className="w-5 h-5 text-primary" />
-                        <h3 className="font-bold text-xl">Public Contact Details</h3>
+                        <h3 className="font-bold text-xl">Contact Information</h3>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <FormField
@@ -299,7 +334,7 @@ export default function SettingsPage() {
                           name="contact_email"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-xs font-bold uppercase tracking-widest">Business Gmail / Email</FormLabel>
+                              <FormLabel className="text-xs font-bold uppercase tracking-widest">Business Email</FormLabel>
                               <FormControl>
                                 <div className="relative">
                                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -330,10 +365,19 @@ export default function SettingsPage() {
                     </div>
                   </TabsContent>
 
-                  <Button type="submit" disabled={isSaving} className="w-full h-14 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.01] transition-transform flex gap-3 mt-8">
-                    {isSaving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-5 h-5" />}
-                    {isSaving ? "Saving..." : "Save All Settings"}
-                  </Button>
+                  <div className="pt-8 border-t">
+                    {!form.formState.isValid && form.formState.isSubmitted && (
+                      <p className="text-red-500 text-sm font-bold mb-4 text-center">Please fill in all required fields across all tabs.</p>
+                    )}
+                    <Button 
+                      type="submit" 
+                      disabled={isSaving} 
+                      className="w-full h-14 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.01] transition-transform flex gap-3"
+                    >
+                      {isSaving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-5 h-5" />}
+                      {isSaving ? "Saving Configuration..." : "Save All Settings"}
+                    </Button>
+                  </div>
                 </div>
               </Tabs>
             </form>
