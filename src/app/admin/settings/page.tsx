@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser, updateDocumentNonBlocking } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Settings, Save, Loader2, Image as ImageIcon, Store, Mail, Phone, MapPin, Upload, X, ShieldAlert } from 'lucide-react';
+import { Settings, Save, Loader2, Image as ImageIcon, Store, Mail, Phone, MapPin, Upload, X, ShieldAlert, CheckCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -31,6 +31,8 @@ export default function SettingsPage() {
   const { user } = useUser();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState("showroom");
+  const [updatingField, setUpdatingField] = useState<string | null>(null);
   
   const settingsRef = useMemoFirebase(() => {
     if (!db) return null;
@@ -86,16 +88,36 @@ export default function SettingsPage() {
     });
   };
 
+  const handleUpdateSingleField = async (fieldName: keyof z.infer<typeof settingsSchema>) => {
+    if (!db || !isSuperAdmin) return;
+    
+    const value = form.getValues(fieldName);
+    if (!value) {
+      toast({ variant: "destructive", title: "Error", description: "Value cannot be empty." });
+      return;
+    }
+
+    setUpdatingField(fieldName);
+    try {
+      const docRef = doc(db, 'settings', 'general');
+      updateDocumentNonBlocking(docRef, { [fieldName]: value });
+      toast({ title: "Updated", description: `${fieldName.replace('_url', '').replace('_', ' ')} has been saved.` });
+    } catch (err) {
+      toast({ variant: "destructive", title: "Save Failed", description: "Could not update the field." });
+    } finally {
+      setTimeout(() => setUpdatingField(null), 1000);
+    }
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof z.infer<typeof settingsSchema>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Reduced limit to 250KB to stay within Firestore 1MB doc limit when storing multiple base64 strings
     if (file.size > 250 * 1024) {
       toast({
         variant: "destructive",
         title: "File too large",
-        description: "Please upload an image smaller than 250KB to ensure site stability."
+        description: "Please upload an image smaller than 250KB for site stability."
       });
       return;
     }
@@ -103,7 +125,7 @@ export default function SettingsPage() {
     try {
       const base64 = await fileToBase64(file);
       form.setValue(fieldName, base64, { shouldValidate: true });
-      toast({ title: "Image Ready", description: "The new asset has been prepared." });
+      toast({ title: "Image Loaded", description: "Press 'Save' button next to the field to apply changes." });
     } catch (err) {
       toast({ variant: "destructive", title: "Upload Failed", description: "Could not process image." });
     }
@@ -121,14 +143,13 @@ export default function SettingsPage() {
     const docRef = doc(db, 'settings', 'general');
     setDocumentNonBlocking(docRef, values, { merge: true });
     
-    // Simulate slight delay for UX
     setTimeout(() => {
       setIsSaving(false);
       toast({ 
         title: "Settings Saved", 
-        description: "Configurations have been pushed to the live site." 
+        description: "All configurations have been updated." 
       });
-    }, 500);
+    }, 800);
   }
 
   if (!isSuperAdmin && !isLoading) {
@@ -155,7 +176,7 @@ export default function SettingsPage() {
           <h1 className="text-3xl font-bold font-headline flex items-center gap-3">
             <Settings className="w-8 h-8 text-primary" /> Site Settings
           </h1>
-          <p className="text-muted-foreground">Manage your showroom's online identity and branding</p>
+          <p className="text-muted-foreground">Modify individual assets or the entire showroom configuration</p>
         </div>
       </div>
 
@@ -168,13 +189,20 @@ export default function SettingsPage() {
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <Tabs defaultValue="showroom" className="w-full">
-                <div className="bg-gray-50 border-b px-8 py-4">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <div className="bg-gray-50 border-b px-8 py-4 flex flex-wrap gap-4 items-center justify-between">
                   <TabsList className="bg-transparent gap-8">
                     <TabsTrigger value="showroom" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Showroom</TabsTrigger>
-                    <TabsTrigger value="branding" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Branding & Images</TabsTrigger>
-                    <TabsTrigger value="contact" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Contact Details</TabsTrigger>
+                    <TabsTrigger value="branding" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Visual Branding</TabsTrigger>
+                    <TabsTrigger value="contact" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent font-bold">Contact</TabsTrigger>
                   </TabsList>
+                  
+                  {activeTab !== 'branding' && (
+                    <Button type="submit" disabled={isSaving} size="sm" className="rounded-full gap-2 font-bold px-6">
+                      {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                      {isSaving ? "Saving..." : "Save Tab Info"}
+                    </Button>
+                  )}
                 </div>
 
                 <div className="p-8 md:p-12 space-y-10">
@@ -200,7 +228,7 @@ export default function SettingsPage() {
                         name="address"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Showroom Physical Address</FormLabel>
+                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Physical Address</FormLabel>
                             <FormControl>
                               <div className="relative">
                                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -214,111 +242,156 @@ export default function SettingsPage() {
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="branding" className="mt-0 space-y-8 animate-in fade-in slide-in-from-left-2 duration-300">
-                    <div className="space-y-8">
+                  <TabsContent value="branding" className="mt-0 space-y-12 animate-in fade-in slide-in-from-left-2 duration-300">
+                    <div className="space-y-10">
                       <div className="flex items-center gap-2 border-b pb-4">
                         <ImageIcon className="w-5 h-5 text-primary" />
-                        <h3 className="font-bold text-xl">Visual Assets</h3>
+                        <h3 className="font-bold text-xl">Visual Assets Management</h3>
                       </div>
                       
-                      <FormField
-                        control={form.control}
-                        name="logo_url"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Showroom Logo</FormLabel>
-                            <FormControl>
-                              <div className="space-y-4">
-                                <div className="flex gap-4 items-center">
-                                  <div className="flex-1">
-                                    <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-gray-100 text-xs" value={field.value ? "Image Uploaded (Base64 Content)" : ""} />
-                                  </div>
-                                  <label className="h-12 px-6 rounded-xl border-2 border-dashed border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold">
-                                    <Upload className="w-4 h-4" /> Upload Logo
-                                    <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'logo_url')} />
-                                  </label>
-                                </div>
-                                {field.value && (
-                                  <div className="relative w-24 h-24 border-2 border-primary/10 rounded-full overflow-hidden bg-gray-50 flex items-center justify-center group">
-                                    <img src={field.value} alt="Logo preview" className="w-full h-full object-cover" />
-                                    <button type="button" onClick={() => field.onChange("")} className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                      <X className="w-3 h-3" />
-                                    </button>
-                                  </div>
-                                )}
+                      {/* Logo Section */}
+                      <div className="bg-gray-50/50 p-6 rounded-[2rem] border border-dashed space-y-6">
+                        <FormField
+                          control={form.control}
+                          name="logo_url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="flex justify-between items-center mb-2">
+                                <FormLabel className="text-xs font-bold uppercase tracking-widest">Showroom Logo</FormLabel>
+                                <Button 
+                                  type="button" 
+                                  size="sm" 
+                                  variant="secondary"
+                                  className="rounded-full font-bold h-8 px-4"
+                                  disabled={updatingField === 'logo_url'}
+                                  onClick={() => handleUpdateSingleField('logo_url')}
+                                >
+                                  {updatingField === 'logo_url' ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle className="w-3 h-3 mr-1" />}
+                                  {updatingField === 'logo_url' ? "Saving..." : "Save Logo Only"}
+                                </Button>
                               </div>
-                            </FormControl>
-                            <FormDescription>Square logo (max 250KB). Displayed as a circle across the site.</FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              <FormControl>
+                                <div className="space-y-4">
+                                  <div className="flex gap-4 items-center">
+                                    <div className="flex-1">
+                                      <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-white text-xs border-dashed" value={field.value ? "Image Loaded (Base64)" : ""} />
+                                    </div>
+                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm">
+                                      <Upload className="w-4 h-4" /> Change Logo
+                                      <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'logo_url')} />
+                                    </label>
+                                  </div>
+                                  {field.value && (
+                                    <div className="relative w-24 h-24 border-4 border-white rounded-full overflow-hidden bg-white shadow-md flex items-center justify-center group">
+                                      <img src={field.value} alt="Logo preview" className="w-full h-full object-cover" />
+                                      <button type="button" onClick={() => field.onChange("")} className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <X className="w-3 h-3" />
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
 
-                      <FormField
-                        control={form.control}
-                        name="hero_image_url"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Hero Banner Image</FormLabel>
-                            <FormControl>
-                              <div className="space-y-4">
-                                <div className="flex gap-4 items-center">
-                                  <div className="flex-1">
-                                    <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-gray-100 text-xs" value={field.value ? "Image Uploaded (Base64 Content)" : ""} />
-                                  </div>
-                                  <label className="h-12 px-6 rounded-xl border-2 border-dashed border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold">
-                                    <Upload className="w-4 h-4" /> Upload Hero
-                                    <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'hero_image_url')} />
-                                  </label>
-                                </div>
-                                {field.value && (
-                                  <div className="relative w-full aspect-[21/9] border-2 border-primary/10 rounded-2xl overflow-hidden bg-gray-50 group">
-                                    <img src={field.value} alt="Hero preview" className="w-full h-full object-cover" />
-                                    <button type="button" onClick={() => field.onChange("")} className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                      <X className="w-4 h-4" />
-                                    </button>
-                                  </div>
-                                )}
+                      {/* Hero Section */}
+                      <div className="bg-gray-50/50 p-6 rounded-[2rem] border border-dashed space-y-6">
+                        <FormField
+                          control={form.control}
+                          name="hero_image_url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="flex justify-between items-center mb-2">
+                                <FormLabel className="text-xs font-bold uppercase tracking-widest">Homepage Hero Banner</FormLabel>
+                                <Button 
+                                  type="button" 
+                                  size="sm" 
+                                  variant="secondary"
+                                  className="rounded-full font-bold h-8 px-4"
+                                  disabled={updatingField === 'hero_image_url'}
+                                  onClick={() => handleUpdateSingleField('hero_image_url')}
+                                >
+                                  {updatingField === 'hero_image_url' ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle className="w-3 h-3 mr-1" />}
+                                  {updatingField === 'hero_image_url' ? "Saving..." : "Save Hero Only"}
+                                </Button>
                               </div>
-                            </FormControl>
-                            <FormDescription>Main homepage banner (max 250KB).</FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              <FormControl>
+                                <div className="space-y-4">
+                                  <div className="flex gap-4 items-center">
+                                    <div className="flex-1">
+                                      <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-white text-xs border-dashed" value={field.value ? "Image Loaded (Base64)" : ""} />
+                                    </div>
+                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm">
+                                      <Upload className="w-4 h-4" /> Change Banner
+                                      <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'hero_image_url')} />
+                                    </label>
+                                  </div>
+                                  {field.value && (
+                                    <div className="relative w-full aspect-[21/9] border-4 border-white rounded-2xl overflow-hidden bg-white shadow-md group">
+                                      <img src={field.value} alt="Hero preview" className="w-full h-full object-cover" />
+                                      <button type="button" onClick={() => field.onChange("")} className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <X className="w-4 h-4" />
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
 
-                      <FormField
-                        control={form.control}
-                        name="service_image_url"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest">Maintenance Image</FormLabel>
-                            <FormControl>
-                              <div className="space-y-4">
-                                <div className="flex gap-4 items-center">
-                                  <div className="flex-1">
-                                    <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-gray-100 text-xs" value={field.value ? "Image Uploaded (Base64 Content)" : ""} />
-                                  </div>
-                                  <label className="h-12 px-6 rounded-xl border-2 border-dashed border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold">
-                                    <Upload className="w-4 h-4" /> Upload Asset
-                                    <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'service_image_url')} />
-                                  </label>
-                                </div>
-                                {field.value && (
-                                  <div className="relative w-full aspect-video border-2 border-primary/10 rounded-2xl overflow-hidden bg-gray-50 group max-w-sm">
-                                    <img src={field.value} alt="Service preview" className="w-full h-full object-cover" />
-                                    <button type="button" onClick={() => field.onChange("")} className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                      <X className="w-4 h-4" />
-                                    </button>
-                                  </div>
-                                )}
+                      {/* Maintenance Section */}
+                      <div className="bg-gray-50/50 p-6 rounded-[2rem] border border-dashed space-y-6">
+                        <FormField
+                          control={form.control}
+                          name="service_image_url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="flex justify-between items-center mb-2">
+                                <FormLabel className="text-xs font-bold uppercase tracking-widest">Workshop Asset</FormLabel>
+                                <Button 
+                                  type="button" 
+                                  size="sm" 
+                                  variant="secondary"
+                                  className="rounded-full font-bold h-8 px-4"
+                                  disabled={updatingField === 'service_image_url'}
+                                  onClick={() => handleUpdateSingleField('service_image_url')}
+                                >
+                                  {updatingField === 'service_image_url' ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle className="w-3 h-3 mr-1" />}
+                                  {updatingField === 'service_image_url' ? "Saving..." : "Save Image Only"}
+                                </Button>
                               </div>
-                            </FormControl>
-                            <FormDescription>Maintenance section asset (max 250KB).</FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              <FormControl>
+                                <div className="space-y-4">
+                                  <div className="flex gap-4 items-center">
+                                    <div className="flex-1">
+                                      <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-white text-xs border-dashed" value={field.value ? "Image Loaded (Base64)" : ""} />
+                                    </div>
+                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm">
+                                      <Upload className="w-4 h-4" /> Change Image
+                                      <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'service_image_url')} />
+                                    </label>
+                                  </div>
+                                  {field.value && (
+                                    <div className="relative w-full aspect-video border-4 border-white rounded-2xl overflow-hidden bg-white shadow-md group max-w-sm">
+                                      <img src={field.value} alt="Service preview" className="w-full h-full object-cover" />
+                                      <button type="button" onClick={() => field.onChange("")} className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <X className="w-4 h-4" />
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </div>
                   </TabsContent>
 
@@ -365,17 +438,22 @@ export default function SettingsPage() {
                     </div>
                   </TabsContent>
 
-                  <div className="pt-8 border-t">
-                    {!form.formState.isValid && form.formState.isSubmitted && (
-                      <p className="text-red-500 text-sm font-bold mb-4 text-center">Please fill in all required fields across all tabs.</p>
-                    )}
+                  <div className="pt-8 border-t flex flex-col md:flex-row gap-4">
                     <Button 
                       type="submit" 
                       disabled={isSaving} 
-                      className="w-full h-14 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.01] transition-transform flex gap-3"
+                      className="flex-1 h-14 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.01] transition-transform flex gap-3"
                     >
                       {isSaving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-5 h-5" />}
-                      {isSaving ? "Saving Configuration..." : "Save All Settings"}
+                      {isSaving ? "Saving Everything..." : "Save All Settings"}
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      onClick={() => form.reset()}
+                      className="h-14 px-8 rounded-2xl font-bold"
+                    >
+                      Reset Changes
                     </Button>
                   </div>
                 </div>
