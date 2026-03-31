@@ -13,9 +13,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { Lock, Loader2, ShieldCheck, UserCog } from 'lucide-react';
-import { useAuth, useFirestore, setDocumentNonBlocking } from '@/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
-import { doc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, collection, query, where, getDocs, setDoc } from 'firebase/firestore';
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -40,7 +40,7 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    if (!db) return;
+    if (!db || !auth) return;
     setLoading(true);
     
     // Explicit bootstrap check for Super Admin role
@@ -69,18 +69,23 @@ export default function LoginPage() {
 
         if (!querySnapshot.empty) {
           const invitation = querySnapshot.docs[0];
-          finalRole = invitation.data().role;
+          const invitedRole = invitation.data().role;
+          
+          // Only overwrite if the selected role isn't already higher privilege (Super)
+          if (finalRole !== 'super_admin') {
+            finalRole = invitedRole;
+          }
           
           toast({ 
             title: "Authorized Access", 
-            description: `Welcome back. Your pre-assigned role as ${finalRole} has been activated.` 
+            description: `Welcome back. Access level: ${finalRole}.` 
           });
         }
 
-        // 3. Link the session UID to the role
+        // 3. Link the session UID to the role (Blocking write to ensure rules sync)
         const adminDocRef = doc(db, 'roles_admin', user.uid);
         
-        setDocumentNonBlocking(adminDocRef, {
+        await setDoc(adminDocRef, {
           email: values.email.toLowerCase(),
           role: finalRole,
           createdAt: new Date().toISOString(),

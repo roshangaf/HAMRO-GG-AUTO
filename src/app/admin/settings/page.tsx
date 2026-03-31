@@ -1,13 +1,13 @@
 
 "use client"
 
-import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser, updateDocumentNonBlocking } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, useUser } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Settings, Save, Loader2, Image as ImageIcon, Store, Mail, Phone, MapPin, Upload, X, ShieldAlert, CheckCircle } from 'lucide-react';
@@ -100,7 +100,8 @@ export default function SettingsPage() {
     setUpdatingField(fieldName);
     try {
       const docRef = doc(db, 'settings', 'general');
-      updateDocumentNonBlocking(docRef, { [fieldName]: value });
+      // Using setDocumentNonBlocking with merge: true is more robust for permission checks
+      setDocumentNonBlocking(docRef, { [fieldName]: value }, { merge: true });
       toast({ title: "Updated", description: `${fieldName.replace('_url', '').replace('_', ' ')} has been saved.` });
     } catch (err) {
       toast({ variant: "destructive", title: "Save Failed", description: "Could not update the field." });

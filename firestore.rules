@@ -7,19 +7,28 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    // Safely get the user's role document
+    function userDoc() {
+      return get(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
     }
 
     function isSuperAdmin() {
-      return isAdmin() && get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.role == 'super_admin';
+      return isSignedIn() && 
+             exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) && 
+             userDoc().data.role == 'super_admin';
+    }
+
+    function isAdmin() {
+      return isSignedIn() && 
+             exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) && 
+             (userDoc().data.role == 'admin' || userDoc().data.role == 'super_admin');
     }
 
     match /roles_admin/{userId} {
       // Allow individual read, and Super Admin can read all
       allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin());
-      // Allow any signed-in user to query for invitations (e.g., checking their own email)
-      allow list: if isSignedIn();
+      // Allow Super Admin to list all staff
+      allow list: if isSignedIn() && isSuperAdmin();
       // Allow individual write (registration) and Super Admin management
       allow write: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin());
     }
