@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from 'next/link';
@@ -98,6 +99,7 @@ export function Hero() {
                 fill
                 className="object-cover"
                 priority
+                loading="eager"
                 data-ai-hint="sports motorcycle"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -108,7 +110,7 @@ export function Hero() {
             </div>
             
             {/* Floating Stats Card */}
-            <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-2xl shadow-2xl animate-bounce-slow border border-gray-100">
+            <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100">
               <div className="flex items-center gap-4">
                 <div className="bg-primary/10 p-4 rounded-xl">
                   <span className="text-2xl font-bold text-primary">2000+</span>

@@ -165,6 +165,14 @@
     "/settings/general": {
       "schema": { "$ref": "#/backend/entities/SiteSettings" },
       "description": "Global site settings."
+    },
+    "/visitors/{visitorId}": {
+      "schema": { "type": "object" },
+      "description": "Tracking for unique visitors/leads."
+    },
+    "/followups/{followupId}": {
+      "schema": { "type": "object" },
+      "description": "Administrative followup logs."
     }
   }
 }

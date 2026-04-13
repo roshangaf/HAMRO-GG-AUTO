@@ -7,29 +7,22 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Safely get the user's role document
-    function userDoc() {
-      return get(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    // Check if user has an admin role document
+    function isAdmin() {
+      return isSignedIn() && 
+             exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) && 
+             (get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.role == 'admin' || 
+              get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.role == 'super_admin');
     }
 
     function isSuperAdmin() {
       return isSignedIn() && 
              exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) && 
-             userDoc().data.role == 'super_admin';
-    }
-
-    function isAdmin() {
-      return isSignedIn() && 
-             exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) && 
-             (userDoc().data.role == 'admin' || userDoc().data.role == 'super_admin');
+             get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.role == 'super_admin';
     }
 
     match /roles_admin/{userId} {
-      // Allow individual read, and Super Admin can read all
       allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin());
-      // Allow Super Admin to list all staff
-      allow list: if isSignedIn() && isSuperAdmin();
-      // Allow individual write (registration) and Super Admin management
       allow write: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin());
     }
 
@@ -48,7 +41,15 @@ service cloud.firestore {
       allow write: if isSuperAdmin();
     }
 
-    // Legacy rules for other paths
+    match /visitors/{visitorId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /followups/{followupId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Legacy rules
     match /blogPosts/{blogPostId} { allow read: if true; allow write: if isAdmin(); }
     match /services/{serviceId} { allow read: if true; allow write: if isAdmin(); }
     match /pageContents/{pageContentId} { allow read: if true; allow write: if isAdmin(); }

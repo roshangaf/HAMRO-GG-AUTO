@@ -1,3 +1,4 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Navbar } from '@/components/layout/Navbar';
@@ -13,9 +14,13 @@ export const metadata: Metadata = {
   title: 'Hamro G&G auto enterprises - Best Second Hand Bikes in Kathmandu',
   description: 'Hamro G&G auto enterprises provides reliable, inspected, and fairly priced second-hand two-wheelers in Kathmandu, Nepal.',
   icons: {
-    icon: LOGO_URL,
-    shortcut: LOGO_URL,
-    apple: LOGO_URL,
+    icon: [
+      { url: LOGO_URL },
+      { url: LOGO_URL, rel: 'shortcut icon' },
+    ],
+    apple: [
+      { url: LOGO_URL },
+    ],
   },
 };
 
@@ -30,6 +35,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://picsum.photos" />
       </head>
       <body className="font-body antialiased min-h-screen">
         <FirebaseClientProvider>

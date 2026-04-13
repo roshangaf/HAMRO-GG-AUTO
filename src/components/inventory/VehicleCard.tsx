@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Gauge, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -21,6 +22,8 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
             alt={vehicle.title} 
             fill
             priority
+            loading="eager"
+            sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
         </div>

@@ -80,22 +80,22 @@ export default function Home() {
           </Link>
         </div>
 
-        {isLoading ? (
-          <div className="py-20 flex justify-center">
-            <Loader2 className="w-12 h-12 animate-spin text-primary" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-            {featuredVehicles.map(vehicle => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="aspect-[4/3] rounded-3xl bg-gray-100 animate-pulse" />
+            ))
+          ) : (
+            featuredVehicles.map(vehicle => (
               <VehicleCard key={vehicle.id} vehicle={vehicle} />
-            ))}
-            {featuredVehicles.length === 0 && (
-              <div className="col-span-full py-10 text-center text-muted-foreground">
-                Check back soon for new inventory!
-              </div>
-            )}
-          </div>
-        )}
+            ))
+          )}
+          {!isLoading && featuredVehicles.length === 0 && (
+            <div className="col-span-full py-10 text-center text-muted-foreground">
+              Check back soon for new inventory!
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Service Section */}
