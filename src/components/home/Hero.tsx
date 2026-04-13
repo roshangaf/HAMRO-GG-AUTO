@@ -1,7 +1,7 @@
-
 "use client"
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShieldCheck, BadgeCheck, Clock, ArrowRight, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -17,7 +17,7 @@ export function Hero() {
   const { data: settings } = useDoc(settingsRef);
 
   const defaultHero = PlaceHolderImages.find(img => img.id === 'hero-bike')?.imageUrl;
-  const heroImage = settings?.hero_image_url || defaultHero;
+  const heroImage = settings?.hero_image_url || defaultHero || "https://picsum.photos/seed/hero/1200/800";
 
   return (
     <div className="relative min-h-[85vh] flex items-center overflow-hidden bg-white">
@@ -91,11 +91,13 @@ export function Hero() {
           
           <div className="relative group perspective-1000 hidden lg:block max-w-lg mx-auto">
             <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl group-hover:bg-primary/30 transition-all duration-500" />
-            <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.02] group-hover:-rotate-1">
-              <img 
+            <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.02] group-hover:-rotate-1 min-h-[600px]">
+              <Image 
                 src={heroImage} 
                 alt="Premium Bike" 
-                className="w-full object-cover aspect-[4/5]"
+                fill
+                className="object-cover"
+                priority
                 data-ai-hint="sports motorcycle"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

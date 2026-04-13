@@ -1,11 +1,10 @@
-
 "use client"
 
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Gauge, Bike, ChevronLeft, Phone, MessageCircle, Share2, ShieldCheck, MapPin, Loader2, ChevronRight } from 'lucide-react';
-import Link from 'next/link';
+import { Calendar, Gauge, Bike, ChevronLeft, Phone, MessageCircle, Share2, ShieldCheck, MapPin, Loader2 } from 'lucide-react';
 import { CONTACT_INFO } from '@/lib/constants';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
@@ -83,11 +82,13 @@ export default function VehicleDetailPage() {
               <CarouselContent>
                 {images.map((url, index) => (
                   <CarouselItem key={index}>
-                    <div className="flex items-center justify-center bg-gray-100 min-h-[400px] md:min-h-[600px] w-full">
-                      <img 
+                    <div className="relative flex items-center justify-center bg-gray-100 min-h-[400px] md:min-h-[600px] w-full">
+                      <Image 
                         src={url} 
                         alt={`${vehicle.title} - Image ${index + 1}`} 
-                        className="max-w-full max-h-[600px] object-contain transition-transform duration-500"
+                        fill
+                        priority={index === 0}
+                        className="object-contain transition-transform duration-500"
                       />
                     </div>
                   </CarouselItem>

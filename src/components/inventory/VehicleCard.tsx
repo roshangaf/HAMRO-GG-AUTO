@@ -1,5 +1,5 @@
-
 import Link from 'next/link';
+import Image from 'next/image';
 import { Calendar, Gauge, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,11 +15,13 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
   return (
     <Card className="overflow-hidden group hover:shadow-2xl transition-all duration-500 border-none bg-white rounded-2xl md:rounded-3xl">
       <Link href={`/inventory/${vehicle.id}`} className="block relative">
-        <div className="aspect-[4/3] overflow-hidden">
-          <img 
+        <div className="aspect-[4/3] overflow-hidden relative">
+          <Image 
             src={vehicle.image_urls[0]} 
             alt={vehicle.title} 
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            fill
+            priority
+            className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
         </div>
         
