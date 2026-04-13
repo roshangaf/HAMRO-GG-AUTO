@@ -86,8 +86,8 @@ export default function Home() {
               <div key={i} className="aspect-[4/3] rounded-3xl bg-gray-100 animate-pulse" />
             ))
           ) : (
-            featuredVehicles.map(vehicle => (
-              <VehicleCard key={vehicle.id} vehicle={vehicle} />
+            featuredVehicles.map((vehicle, index) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} isPriority={index < 4} />
             ))
           )}
           {!isLoading && featuredVehicles.length === 0 && (

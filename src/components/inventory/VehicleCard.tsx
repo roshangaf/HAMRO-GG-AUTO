@@ -8,9 +8,10 @@ import { Vehicle } from '@/types/vehicle';
 
 interface VehicleCardProps {
   vehicle: Vehicle;
+  isPriority?: boolean;
 }
 
-export function VehicleCard({ vehicle }: VehicleCardProps) {
+export function VehicleCard({ vehicle, isPriority = false }: VehicleCardProps) {
   const isSold = vehicle.status === 'sold';
   
   return (
@@ -21,8 +22,8 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
             src={vehicle.image_urls[0]} 
             alt={vehicle.title} 
             fill
-            priority
-            loading="eager"
+            priority={isPriority}
+            loading={isPriority ? "eager" : "lazy"}
             sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover group-hover:scale-110 transition-transform duration-700"
           />

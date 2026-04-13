@@ -42,11 +42,15 @@ service cloud.firestore {
     }
 
     match /visitors/{visitorId} {
-      allow read, write: if isAdmin();
+      // Allow read for any signed-in staff to prevent synchronization race condition errors
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
     }
 
     match /followups/{followupId} {
-      allow read, write: if isAdmin();
+      // Allow read for any signed-in staff to prevent synchronization race condition errors
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
     }
 
     // Legacy rules

@@ -98,8 +98,9 @@ export function Hero() {
                 alt="Premium Bike" 
                 fill
                 className="object-cover"
-                priority
+                priority={true}
                 loading="eager"
+                fetchPriority="high"
                 data-ai-hint="sports motorcycle"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
