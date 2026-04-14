@@ -33,7 +33,7 @@ export function Navbar() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  const logoImage = settings?.logo_url || PlaceHolderImages.find(img => img.id === 'logo')?.imageUrl || 'https://scontent.fktm1-1.fna.fbcdn.net/v/t39.30808-1/593739152_830641063205263_2454045155820817139_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=2d3e12&_nc_eui2=AeHi_xsQHWcLkkyjcfB0YwM-7cEeyjqOIf_twR7KOo4h_9fRErvbchD1UMhUeW0Ot7O1yjKuwJWOw0Xog1DOidxd&_nc_ohc=pyFYQPBopocQ7kNvwEMrf_z&_nc_oc=AdqV8gDwDHCPDitRmaMC6OXYNDMwm-DANqtRp5wIXQTWZ_r27LnAWcXWu5m3yLog9UE&_nc_zt=24&_nc_ht=scontent.fktm1-1.fna&_nc_gid=3P3KoNK69sTEyeU8MYPUbw&_nc_ss=7a32e&oh=00_AfyDzbJGks-2tVK1w3AOR3qaQQUK5ynIMRJUxRCtnizVYQ&oe=69C701C1';
+  const logoImage = settings?.logo_url || PlaceHolderImages.find(img => img.id === 'logo')?.imageUrl || 'https://scontent.fktm1-1.fna.fbcdn.net/v/t39.30808-1/593739152_830641063205263_2454045155820817139_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=2d3e12&_nc_eui2=AeHi_xsQHWcLkkyjcfB0YwM-7cEeyjqOIf_twR7KOo4h_9fRErvbchD1UMhUeW0Ot7O1yjKuwJWOw0Xog1DOidxd&_nc_ohc=pyFYQPBopocQ7kNvwEMrf_z&_nc_oc=AdqV8gDwDHCPDitRmaMC6OXYNDMwm-DANqtRp5wIXQTWZ_r27LnAWcXWu5m3yLog9UE&_nc_zt=24&_nc_ht=scontent.fktm1-1.fna&_nc_gid=3P3KoNK69sTEyeU8MYPUbw&_nc_ss=7a32e&oh=00_AfyDzbJGks-2tVK1w3AOR3qaQQU5ynIMRJUxRCtnizVYQ&oe=69C701C1';
   const businessName = settings?.business_name || CONTACT_INFO.businessName;
 
   const navLinks = [
@@ -71,13 +71,9 @@ export function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <div className="flex items-baseline gap-1">
-                <span className="font-headline font-black text-xs tracking-widest text-muted-foreground uppercase leading-none">Hamro</span>
-              </div>
               <span className="font-headline font-bold text-2xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
                 {businessName}
               </span>
-              <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-muted-foreground mt-0.5">enterprises</span>
             </div>
           </Link>
 

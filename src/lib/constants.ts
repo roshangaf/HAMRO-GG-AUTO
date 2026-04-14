@@ -4,7 +4,7 @@ export const CONTACT_INFO = {
   email: 'info@ggautonp.com',
   address: 'Nayabasti, Boudha (Everest Petrol Pump)',
   mapsLink: 'https://maps.app.goo.gl/HVmWQXMgEefpc5rP7',
-  businessName: 'Hamro G&G Auto Enterprises',
+  businessName: 'G&G AUTO',
   facebook: 'https://www.facebook.com/hamrogngauto'
 };
 
