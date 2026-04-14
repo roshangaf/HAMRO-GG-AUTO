@@ -1,15 +1,16 @@
-
 "use client"
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Wrench, Bike, ShieldCheck, Settings, Users } from 'lucide-react';
+import { Menu, X, Wrench, Bike, Settings, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useFirestore, useDoc, useMemoFirebase, useUser } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { CONTACT_INFO } from '@/lib/constants';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,8 +33,8 @@ export function Navbar() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  const logoImage = settings?.logo_url || PlaceHolderImages.find(img => img.id === 'logo')?.imageUrl;
-  const businessName = settings?.business_name || "G&G AUTO";
+  const logoImage = settings?.logo_url || PlaceHolderImages.find(img => img.id === 'logo')?.imageUrl || 'https://scontent.fktm1-1.fna.fbcdn.net/v/t39.30808-1/593739152_830641063205263_2454045155820817139_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=2d3e12&_nc_eui2=AeHi_xsQHWcLkkyjcfB0YwM-7cEeyjqOIf_twR7KOo4h_9fRErvbchD1UMhUeW0Ot7O1yjKuwJWOw0Xog1DOidxd&_nc_ohc=pyFYQPBopocQ7kNvwEMrf_z&_nc_oc=AdqV8gDwDHCPDitRmaMC6OXYNDMwm-DANqtRp5wIXQTWZ_r27LnAWcXWu5m3yLog9UE&_nc_zt=24&_nc_ht=scontent.fktm1-1.fna&_nc_gid=3P3KoNK69sTEyeU8MYPUbw&_nc_ss=7a32e&oh=00_AfyDzbJGks-2tVK1w3AOR3qaQQUK5ynIMRJUxRCtnizVYQ&oe=69C701C1';
+  const businessName = settings?.business_name || CONTACT_INFO.businessName;
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -59,11 +60,13 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform duration-300 shadow-md border overflow-hidden flex items-center justify-center">
-              <img 
+            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform duration-300 shadow-md border overflow-hidden flex items-center justify-center relative">
+              <Image 
                 src={logoImage} 
                 alt="Logo" 
-                className="w-full h-full object-cover"
+                fill
+                priority={true}
+                className="object-cover"
                 data-ai-hint="business logo"
               />
             </div>
@@ -71,7 +74,9 @@ export function Navbar() {
               <div className="flex items-baseline gap-1">
                 <span className="font-headline font-black text-xs tracking-widest text-muted-foreground uppercase leading-none">Hamro</span>
               </div>
-              <span className="font-headline font-bold text-2xl tracking-tighter leading-none text-primary uppercase">{businessName}</span>
+              <span className="font-headline font-bold text-2xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
+                {businessName}
+              </span>
               <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-muted-foreground mt-0.5">enterprises</span>
             </div>
           </Link>
