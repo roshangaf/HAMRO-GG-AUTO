@@ -71,9 +71,15 @@ export function Navbar() {
                 data-ai-hint="business logo"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="font-headline font-bold text-xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
-                {businessName}
+            <div className="flex flex-col -space-y-1">
+              <span className="text-[10px] font-black tracking-[0.25em] text-muted-foreground leading-none uppercase">
+                Hamro
+              </span>
+              <span className="font-headline font-black text-xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
+                G&G AUTO
+              </span>
+              <span className="text-[9px] font-bold tracking-[0.1em] text-foreground/40 leading-none uppercase mt-0.5">
+                Enterprises
               </span>
             </div>
           </Link>

@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from 'next/link';
@@ -36,8 +37,16 @@ export function Footer() {
                 data-ai-hint="business logo"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="font-headline font-bold text-lg uppercase leading-none">{businessName}</span>
+            <div className="flex flex-col -space-y-1">
+              <span className="text-[8px] font-black tracking-[0.3em] text-white/60 leading-none uppercase">
+                Hamro
+              </span>
+              <span className="font-headline font-black text-lg tracking-tighter leading-none text-white uppercase whitespace-nowrap">
+                G&G AUTO
+              </span>
+              <span className="text-[8px] font-bold tracking-[0.15em] text-white/40 leading-none uppercase">
+                Enterprises
+              </span>
             </div>
           </Link>
           <p className="text-sm text-white/70 leading-relaxed">

@@ -12,7 +12,7 @@ const LOGO_URL = 'https://scontent.fktm1-1.fna.fbcdn.net/v/t39.30808-1/593739152
 const HERO_URL = 'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
 export const metadata: Metadata = {
-  title: 'G&G AUTO - Best Second Hand Bikes in Kathmandu',
+  title: 'Hamro G&G AUTO Enterprises - Best Second Hand Bikes in Kathmandu',
   description: 'G&G AUTO provides reliable, inspected, and fairly priced second-hand two-wheelers in Kathmandu, Nepal.',
   icons: {
     icon: [
