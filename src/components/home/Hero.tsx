@@ -5,9 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ShieldCheck, BadgeCheck, Clock, ArrowRight, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
+import { CONTACT_INFO } from '@/lib/constants';
 
 export function Hero() {
   const db = useFirestore();
@@ -17,8 +17,8 @@ export function Hero() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  const defaultHero = PlaceHolderImages.find(img => img.id === 'hero-bike')?.imageUrl;
-  const heroImage = settings?.hero_image_url || defaultHero || "https://picsum.photos/seed/hero/1200/800";
+  // Instant Delivery: Use standardized hero URL from constants as the primary fallback
+  const heroImage = settings?.hero_image_url || CONTACT_INFO.heroUrl;
 
   return (
     <div className="relative min-h-[85vh] flex items-center overflow-hidden bg-white">
@@ -95,12 +95,12 @@ export function Hero() {
             <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.02] group-hover:-rotate-1 min-h-[600px]">
               <Image 
                 src={heroImage} 
-                alt="Premium Bike" 
+                alt="Premium Showroom Bike" 
                 fill
                 className="object-cover"
                 priority={true}
                 loading="eager"
-                fetchPriority="high"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 data-ai-hint="sports motorcycle"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
