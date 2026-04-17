@@ -17,7 +17,6 @@ export function Hero() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // Instant Delivery: Use standardized hero URL from constants as the primary fallback
   const heroImage = settings?.hero_image_url || CONTACT_INFO.heroUrl;
 
   return (
@@ -29,22 +28,25 @@ export function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 w-full py-12 lg:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="text-center lg:text-left space-y-10 order-2 lg:order-1">
-            <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-bold text-sm animate-in fade-in slide-in-from-left duration-700">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              KATHMANDU'S #1 SECOND-HAND SHOWROOM
+            <div className="space-y-8">
+              <h1 className="font-headline font-bold text-5xl md:text-7xl text-foreground leading-[1.1] tracking-tight flex flex-col items-center lg:items-start gap-4">
+                <span className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8">
+                  <span>Ride Your <span className="text-primary">Dream</span></span>
+                  <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-bold text-[10px] md:text-sm animate-in fade-in slide-in-from-left duration-700 h-fit whitespace-nowrap shadow-sm border border-primary/5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    KATHMANDU'S #1 SECOND-HAND HUB
+                  </div>
+                </span>
+                <span>With Confidence</span>
+              </h1>
+              
+              <p className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                Find reliable, inspected, and fairly priced second-hand bikes and scooters. Your journey to a perfect ride starts here.
+              </p>
             </div>
-            
-            <h1 className="font-headline font-bold text-5xl md:text-7xl text-foreground leading-[1.1] tracking-tight">
-              Ride Your <span className="text-primary">Dream</span> <br />
-              With Confidence
-            </h1>
-            
-            <p className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Find reliable, inspected, and fairly priced second-hand bikes and scooters. Your journey to a perfect ride starts here.
-            </p>
             
             <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
               <Button size="lg" className="h-14 px-8 bg-primary hover:bg-primary/90 text-lg font-bold rounded-full shadow-2xl shadow-primary/30 group" asChild>
@@ -90,9 +92,9 @@ export function Hero() {
             </div>
           </div>
           
-          <div className="relative group perspective-1000 order-1 lg:order-2 max-w-lg mx-auto w-full">
+          <div className="relative group order-1 lg:order-2 max-w-lg mx-auto w-full px-4 lg:px-0">
             <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl group-hover:bg-primary/30 transition-all duration-500" />
-            <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.02] group-hover:-rotate-1 aspect-[4/5] lg:min-h-[600px]">
+            <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.01] aspect-[4/5] lg:min-h-[600px] border-4 border-white/50 bg-gray-50">
               <Image 
                 src={heroImage} 
                 alt="Premium Showroom Bike" 
@@ -106,12 +108,12 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-10 left-10 text-white space-y-2">
                 <div className="bg-primary px-3 py-1 rounded-full text-xs font-bold inline-block">TRENDING NOW</div>
-                <p className="text-3xl font-bold font-headline leading-tight">Featured <br /> Collection 2024</p>
+                <p className="text-3xl font-bold font-headline leading-tight">Featured <br /> Collection 2025</p>
               </div>
             </div>
             
             {/* Floating Stats Card */}
-            <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 hidden sm:block">
+            <div className="absolute -bottom-10 -right-2 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 hidden sm:block">
               <div className="flex items-center gap-4">
                 <div className="bg-primary/10 p-4 rounded-xl">
                   <span className="text-2xl font-bold text-primary">2000+</span>

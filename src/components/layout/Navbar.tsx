@@ -2,7 +2,6 @@
 "use client"
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Wrench, Bike, Settings, Users } from 'lucide-react';
@@ -57,27 +56,24 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-          <Link href="/" className="flex items-center gap-4 group">
-            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform duration-300 shadow-md border overflow-hidden flex items-center justify-center relative shrink-0">
-              <Image 
+        <div className="flex justify-between h-24 items-center">
+          <Link href="/" className="flex items-center gap-5 group">
+            <div className="w-14 h-14 bg-white rounded-full group-hover:rotate-6 transition-transform duration-500 shadow-md border-2 border-primary/5 overflow-hidden flex items-center justify-center relative shrink-0">
+              <img 
                 src={logoImage} 
                 alt="G&G Auto Logo" 
-                fill
-                priority={true}
-                className="object-cover"
-                sizes="48px"
-                fetchPriority="high"
+                className="w-full h-full object-cover"
+                fetchpriority="high"
               />
             </div>
-            <div className="flex flex-col space-y-1">
-              <span className="text-[8px] font-bold tracking-[0.5em] text-muted-foreground/60 leading-none uppercase ml-0.5">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold tracking-[0.3em] text-muted-foreground/60 leading-tight uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-normal leading-none text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl md:text-3xl tracking-normal leading-tight text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[8px] font-bold tracking-[0.3em] text-foreground/40 leading-none uppercase ml-0.5">
+              <span className="text-[10px] font-bold tracking-[0.2em] text-foreground/30 leading-tight uppercase">
                 Enterprises
               </span>
             </div>
@@ -125,9 +121,9 @@ export function Navbar() {
           <div className="md:hidden flex items-center">
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              {isOpen ? <X className="X-6 h-6 text-foreground" /> : <Menu className="w-6 h-6 text-foreground" />}
+              {isOpen ? <X className="h-6 w-6 text-foreground" /> : <Menu className="h-6 w-6 text-foreground" />}
             </button>
           </div>
         </div>

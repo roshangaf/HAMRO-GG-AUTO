@@ -24,30 +24,30 @@ export function Footer() {
   const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}`;
 
   return (
-    <footer className="bg-primary text-white pt-12 pb-8 border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="space-y-6">
-          <Link href="/" className="flex items-center gap-4 group">
-            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform overflow-hidden flex items-center justify-center relative border-2 border-white/20 shrink-0">
+    <footer className="bg-primary text-white pt-16 pb-8 border-t border-white/10">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+        <div className="space-y-8">
+          <Link href="/" className="flex items-center gap-5 group">
+            <div className="w-16 h-16 bg-white rounded-full group-hover:rotate-6 transition-transform overflow-hidden flex items-center justify-center relative border-4 border-white/20 shrink-0 shadow-lg">
               <img 
                 src={logoImage} 
                 alt="Logo" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="flex flex-col space-y-1">
-              <span className="text-[8px] font-bold tracking-[0.5em] text-white/60 leading-none uppercase ml-0.5">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold tracking-[0.3em] text-white/70 leading-tight uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-normal leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-normal leading-tight text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[8px] font-bold tracking-[0.3em] text-white/40 leading-none uppercase ml-0.5">
+              <span className="text-[10px] font-bold tracking-[0.2em] text-white/50 leading-tight uppercase">
                 Enterprises
               </span>
             </div>
           </Link>
-          <p className="text-sm text-white/70 leading-relaxed">
+          <p className="text-sm text-white/70 leading-relaxed max-w-xs">
             Reliable second-hand bikes and scooters showroom in {address.split(',')[0]}. 
             We offer sales, exchange, and servicing for all major brands.
           </p>
@@ -56,7 +56,7 @@ export function Footer() {
               href={CONTACT_INFO.facebook} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="hover:text-white transition-colors bg-white/10 p-2 rounded-full"
+              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full"
               title="Follow us on Facebook"
             >
               <Facebook className="w-5 h-5" />
@@ -65,7 +65,7 @@ export function Footer() {
               href={whatsappUrl} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="hover:text-white transition-colors bg-white/10 p-2 rounded-full"
+              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full"
               title="Chat on WhatsApp"
             >
               <MessageCircle className="w-5 h-5" />
@@ -74,8 +74,8 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="font-headline font-bold mb-4">Quick Links</h4>
-          <ul className="space-y-2 text-sm text-white/70">
+          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Quick Links</h4>
+          <ul className="space-y-3 text-sm text-white/70">
             <li><Link href="/inventory" className="hover:text-white transition-colors">All Inventory</Link></li>
             <li><Link href="/sell" className="hover:text-white transition-colors">Sell Your Bike</Link></li>
             <li><Link href="/exchange" className="hover:text-white transition-colors">Exchange Offers</Link></li>
@@ -85,18 +85,18 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="font-headline font-bold mb-4">Our Services</h4>
-          <ul className="space-y-2 text-sm text-white/70">
-            <li className="hover:text-white cursor-default">Used Bike Sales</li>
-            <li className="hover:text-white cursor-default">Second Hand Scooters</li>
-            <li className="hover:text-white cursor-default">Easy Exchange Facility</li>
-            <li className="hover:text-white cursor-default">Insurance Transfer</li>
-            <li className="hover:text-white cursor-default">Workshop Services</li>
+          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Our Services</h4>
+          <ul className="space-y-3 text-sm text-white/70">
+            <li className="hover:text-white cursor-default transition-colors">Used Bike Sales</li>
+            <li className="hover:text-white cursor-default transition-colors">Second Hand Scooters</li>
+            <li className="hover:text-white cursor-default transition-colors">Easy Exchange Facility</li>
+            <li className="hover:text-white cursor-default transition-colors">Insurance Transfer</li>
+            <li className="hover:text-white cursor-default transition-colors">Workshop Services</li>
           </ul>
         </div>
 
         <div>
-          <h4 className="font-headline font-bold mb-4">Contact Us</h4>
+          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Contact Us</h4>
           <ul className="space-y-4 text-sm text-white/70">
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 mt-0.5 shrink-0 text-white/40" />
@@ -104,14 +104,14 @@ export function Footer() {
                 href={CONTACT_INFO.mapsLink} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="hover:text-white transition-colors"
+                className="hover:text-white transition-colors leading-relaxed"
               >
                 {address}
               </a>
             </li>
             <li className="flex items-center gap-3">
               <Phone className="w-5 h-5 shrink-0 text-white/40" />
-              <a href={`tel:${contactPhone}`} className="hover:text-white transition-colors font-bold">{contactPhone}</a>
+              <a href={`tel:${contactPhone}`} className="hover:text-white transition-colors font-bold text-base">{contactPhone}</a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="w-5 h-5 shrink-0 text-white/40" />
@@ -120,7 +120,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-xs text-white/40">
+      <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-white/10 text-center text-xs text-white/30 tracking-widest uppercase">
         <p>&copy; {new Date().getFullYear()} {businessName}. All rights reserved.</p>
       </div>
     </footer>
