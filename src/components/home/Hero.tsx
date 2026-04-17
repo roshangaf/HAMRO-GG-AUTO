@@ -1,15 +1,17 @@
 
 "use client"
 
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ShieldCheck, BadgeCheck, Clock, ArrowRight, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { CONTACT_INFO } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 export function Hero() {
+  const [isSliding, setIsSliding] = useState(false);
   const db = useFirestore();
   const settingsRef = useMemoFirebase(() => {
     if (!db) return null;
@@ -18,6 +20,11 @@ export function Hero() {
   const { data: settings } = useDoc(settingsRef);
 
   const heroImage = settings?.hero_image_url || CONTACT_INFO.heroUrl;
+
+  const handleBadgeClick = () => {
+    setIsSliding(true);
+    setTimeout(() => setIsSliding(false), 1200);
+  };
 
   return (
     <div className="relative min-h-[85vh] flex items-center overflow-hidden bg-white">
@@ -29,8 +36,14 @@ export function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="text-center lg:text-left space-y-10 order-2 lg:order-1">
             <div className="space-y-6">
-              {/* Repositioned Badge with high-impact animation */}
-              <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-bold text-[10px] md:text-sm animate-in fade-in slide-in-from-left duration-1000 h-fit whitespace-nowrap shadow-sm border border-primary/5">
+              {/* Premium Badge with Slide Interaction */}
+              <div 
+                onClick={handleBadgeClick}
+                className={cn(
+                  "inline-flex items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-full text-primary font-bold text-[10px] md:text-sm h-fit whitespace-nowrap shadow-sm border border-primary/10 cursor-pointer select-none transition-all hover:bg-primary/20",
+                  isSliding ? "animate-out slide-out-to-right duration-1000 fill-mode-forwards" : "animate-in fade-in slide-in-from-left duration-1000"
+                )}
+              >
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>

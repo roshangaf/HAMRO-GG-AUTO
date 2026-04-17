@@ -35,14 +35,14 @@ export function Footer() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] font-bold tracking-[0.4em] text-white/70 leading-none uppercase">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold tracking-[0.3em] text-white/70 leading-none uppercase mb-1">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-tight leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-normal leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-[0.3em] text-white/50 leading-none uppercase">
+              <span className="text-[10px] font-bold tracking-[0.2em] text-white/50 leading-none uppercase mt-1">
                 Enterprises
               </span>
             </div>
