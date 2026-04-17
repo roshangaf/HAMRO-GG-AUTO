@@ -67,16 +67,17 @@ export function Navbar() {
                 priority={true}
                 className="object-cover"
                 sizes="48px"
+                fetchPriority="high"
               />
             </div>
-            <div className="flex flex-col -space-y-1.5">
-              <span className="text-[8px] font-bold tracking-[0.4em] text-muted-foreground/60 leading-none uppercase">
+            <div className="flex flex-col space-y-0.5">
+              <span className="text-[7px] font-bold tracking-[0.4em] text-muted-foreground/60 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-xl tracking-tight leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[8px] font-bold tracking-[0.2em] text-foreground/40 leading-none uppercase mt-1">
+              <span className="text-[7px] font-bold tracking-[0.2em] text-foreground/40 leading-none uppercase">
                 Enterprises
               </span>
             </div>
@@ -126,7 +127,7 @@ export function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              {isOpen ? <X className="w-6 h-6 text-foreground" /> : <Menu className="w-6 h-6 text-foreground" />}
+              {isOpen ? <X className="X-6 h-6 text-foreground" /> : <Menu className="w-6 h-6 text-foreground" />}
             </button>
           </div>
         </div>
