@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Phone, Mail, MapPin, Facebook, MessageCircle } from 'lucide-react';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { collection, doc } from 'firebase/firestore';
 import { CONTACT_INFO } from '@/lib/constants';
 
 export function Footer() {
