@@ -26,9 +26,9 @@ export function Hero() {
       <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 -skew-x-12 transform origin-top-right hidden lg:block" />
       <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
       
-      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full py-12 lg:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="text-center lg:text-left space-y-10">
+          <div className="text-center lg:text-left space-y-10 order-2 lg:order-1">
             <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-bold text-sm animate-in fade-in slide-in-from-left duration-700">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -90,9 +90,9 @@ export function Hero() {
             </div>
           </div>
           
-          <div className="relative group perspective-1000 hidden lg:block max-w-lg mx-auto">
+          <div className="relative group perspective-1000 order-1 lg:order-2 max-w-lg mx-auto w-full">
             <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl group-hover:bg-primary/30 transition-all duration-500" />
-            <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.02] group-hover:-rotate-1 min-h-[600px]">
+            <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.02] group-hover:-rotate-1 aspect-[4/5] lg:min-h-[600px]">
               <Image 
                 src={heroImage} 
                 alt="Premium Showroom Bike" 
@@ -111,7 +111,7 @@ export function Hero() {
             </div>
             
             {/* Floating Stats Card */}
-            <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100">
+            <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 hidden sm:block">
               <div className="flex items-center gap-4">
                 <div className="bg-primary/10 p-4 rounded-xl">
                   <span className="text-2xl font-bold text-primary">2000+</span>

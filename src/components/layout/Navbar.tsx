@@ -58,8 +58,8 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform duration-300 shadow-md border overflow-hidden flex items-center justify-center relative">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform duration-300 shadow-md border overflow-hidden flex items-center justify-center relative shrink-0">
               <Image 
                 src={logoImage} 
                 alt="G&G Auto Logo" 
@@ -70,14 +70,14 @@ export function Navbar() {
                 fetchPriority="high"
               />
             </div>
-            <div className="flex flex-col space-y-0.5">
-              <span className="text-[7px] font-bold tracking-[0.4em] text-muted-foreground/60 leading-none uppercase">
+            <div className="flex flex-col space-y-1">
+              <span className="text-[8px] font-bold tracking-[0.5em] text-muted-foreground/60 leading-none uppercase ml-0.5">
                 Hamro
               </span>
-              <span className="font-headline font-black text-xl tracking-tight leading-none text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-normal leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[7px] font-bold tracking-[0.2em] text-foreground/40 leading-none uppercase">
+              <span className="text-[8px] font-bold tracking-[0.3em] text-foreground/40 leading-none uppercase ml-0.5">
                 Enterprises
               </span>
             </div>

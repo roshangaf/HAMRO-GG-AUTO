@@ -27,22 +27,22 @@ export function Footer() {
     <footer className="bg-primary text-white pt-12 pb-8 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-6">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform overflow-hidden flex items-center justify-center relative border-2 border-white/20">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="w-12 h-12 bg-white rounded-full group-hover:rotate-6 transition-transform overflow-hidden flex items-center justify-center relative border-2 border-white/20 shrink-0">
               <img 
                 src={logoImage} 
                 alt="Logo" 
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="flex flex-col space-y-0.5">
-              <span className="text-[7px] font-black tracking-[0.4em] text-white/60 leading-none uppercase">
+            <div className="flex flex-col space-y-1">
+              <span className="text-[8px] font-bold tracking-[0.5em] text-white/60 leading-none uppercase ml-0.5">
                 Hamro
               </span>
-              <span className="font-headline font-black text-xl tracking-tight leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-normal leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[7px] font-bold tracking-[0.2em] text-white/40 leading-none uppercase">
+              <span className="text-[8px] font-bold tracking-[0.3em] text-white/40 leading-none uppercase ml-0.5">
                 Enterprises
               </span>
             </div>
