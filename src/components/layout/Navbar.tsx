@@ -32,6 +32,7 @@ export function Navbar() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
+  // Instant delivery: Use direct constants for initial load to avoid flicker
   const logoImage = settings?.logo_url || CONTACT_INFO.logoUrl;
 
   const navLinks = [
@@ -63,6 +64,7 @@ export function Navbar() {
                 src={logoImage} 
                 alt="G&G Auto Logo" 
                 className="w-full h-full object-cover"
+                loading="eager"
                 fetchPriority="high"
               />
             </div>
