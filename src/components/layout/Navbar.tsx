@@ -32,7 +32,7 @@ export function Navbar() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // Instant delivery: Use direct constants for initial load to avoid flicker
+  // High Fetch Priority Branding
   const logoImage = settings?.logo_url || CONTACT_INFO.logoUrl;
 
   const navLinks = [
@@ -69,13 +69,13 @@ export function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-[9px] font-bold tracking-[0.3em] text-muted-foreground/60 leading-none uppercase mb-1">
+              <span className="text-[9px] font-bold tracking-[0.4em] text-muted-foreground/60 leading-none uppercase mb-1.5">
                 Hamro
               </span>
-              <span className="font-headline font-black text-xl md:text-2xl tracking-normal leading-none text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-xl md:text-2xl tracking-wider leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[9px] font-bold tracking-[0.2em] text-foreground/30 leading-none uppercase mt-1">
+              <span className="text-[9px] font-bold tracking-[0.3em] text-foreground/30 leading-none uppercase mt-1.5">
                 Enterprises
               </span>
             </div>
@@ -87,8 +87,8 @@ export function Navbar() {
               <Link 
                 key={link.name} 
                 href={link.href}
-                className={`text-sm font-bold transition-colors flex items-center gap-2 ${
-                  pathname === link.href ? 'text-primary' : 'text-foreground/70 hover:text-primary'
+                className={`text-sm font-bold transition-colors flex items-center gap-2 tracking-wide ${
+                  pathname === link.href ? 'text-primary underline decoration-2 underline-offset-8' : 'text-foreground/70 hover:text-primary'
                 }`}
               >
                 {link.icon}
@@ -101,17 +101,17 @@ export function Navbar() {
             <div className="flex items-center gap-3">
               {isAdminPage ? (
                 <div className="flex items-center gap-3">
-                  {isSuperAdmin && <Badge className="bg-primary/10 text-primary border-primary/20">SUPER ADMIN</Badge>}
-                  <Button variant="outline" className="font-bold gap-2 rounded-full" asChild>
+                  {isSuperAdmin && <Badge className="bg-primary/10 text-primary border-primary/20 font-black">SUPER ADMIN</Badge>}
+                  <Button variant="outline" className="font-bold gap-2 rounded-full border-2" asChild>
                     <Link href="/"><Bike className="w-4 h-4" /> View Site</Link>
                   </Button>
                 </div>
               ) : (
                 <>
-                  <Button variant="ghost" className="font-bold text-primary gap-2" asChild>
+                  <Button variant="ghost" className="font-bold text-primary gap-2 hover:bg-primary/5" asChild>
                     <Link href="/book-service"><Wrench className="w-4 h-4" /> Book Service</Link>
                   </Button>
-                  <Button className="font-bold rounded-full px-6 shadow-lg shadow-primary/20" asChild>
+                  <Button className="font-bold rounded-full px-6 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all" asChild>
                     <Link href="/inventory">Browse Bikes</Link>
                   </Button>
                 </>

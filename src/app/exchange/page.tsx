@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { RefreshCw, Camera, CheckCircle2, Loader2, Image as ImageIcon, Plus, X } from 'lucide-react';
 import { useFirestore, addDocumentNonBlocking } from '@/firebase';
 import { collection } from 'firebase/firestore';
+import { compressImage } from '@/lib/image-upload';
 
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -26,6 +27,7 @@ export default function ExchangePage() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
   const db = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,33 +42,26 @@ export default function ExchangePage() {
     },
   });
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
+    setIsCompressing(true);
     const currentImages = form.getValues('images');
     const newImages = [...currentImages];
 
     for (let i = 0; i < files.length; i++) {
       if (newImages.length >= 6) break;
       try {
-        const base64 = await fileToBase64(files[i]);
-        newImages.push(base64);
+        const compressedBase64 = await compressImage(files[i]);
+        newImages.push(compressedBase64);
       } catch (err) {
         console.error("Error reading file", err);
       }
     }
 
     form.setValue('images', newImages, { shouldValidate: true });
+    setIsCompressing(false);
   };
 
   const removeImage = (index: number) => {
@@ -209,7 +204,10 @@ export default function ExchangePage() {
                   <h3 className="text-2xl font-bold font-headline flex items-center gap-3">
                     <Camera className="w-6 h-6 text-primary" /> Vehicle Photos (Max 6)
                   </h3>
-                  <span className="text-[10px] text-muted-foreground font-bold">{form.watch('images').length} / 6</span>
+                  <div className="flex items-center gap-4">
+                    {isCompressing && <div className="flex items-center gap-2 text-primary font-bold animate-pulse text-[10px]"><Loader2 className="w-3 h-3 animate-spin" /> Optimizing...</div>}
+                    <span className="text-[10px] text-muted-foreground font-bold">{form.watch('images').length} / 6</span>
+                  </div>
                 </div>
                 
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -235,18 +233,19 @@ export default function ExchangePage() {
                         accept="image/*" 
                         multiple 
                         onChange={handleImageUpload} 
+                        disabled={isCompressing}
                       />
                     </label>
                   )}
                 </div>
                 <FormMessage>{form.formState.errors.images?.message}</FormMessage>
-                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Provide clear photos of front, sides, and engine area for accurate pricing.</p>
+                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Provide clear photos. Large images are automatically optimized for fast upload.</p>
               </div>
             </div>
 
             <Button 
               type="submit" 
-              disabled={loading} 
+              disabled={loading || isCompressing} 
               className="w-full h-16 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.01] transition-transform"
             >
               {loading ? <Loader2 className="animate-spin w-6 h-6" /> : "Request Exchange Valuation"}

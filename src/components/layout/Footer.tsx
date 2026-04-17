@@ -36,13 +36,13 @@ export function Footer() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-bold tracking-[0.3em] text-white/70 leading-none uppercase mb-1">
+              <span className="text-[10px] font-bold tracking-[0.4em] text-white/70 leading-none uppercase mb-2">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-normal leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-wide leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-[0.2em] text-white/50 leading-none uppercase mt-1">
+              <span className="text-[10px] font-bold tracking-[0.3em] text-white/50 leading-none uppercase mt-2">
                 Enterprises
               </span>
             </div>
@@ -74,7 +74,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Quick Links</h4>
+          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block uppercase tracking-widest">Quick Links</h4>
           <ul className="space-y-3 text-sm text-white/70 font-medium">
             <li><Link href="/inventory" className="hover:text-white transition-colors">All Inventory</Link></li>
             <li><Link href="/sell" className="hover:text-white transition-colors">Sell Your Bike</Link></li>
@@ -85,7 +85,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Our Services</h4>
+          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block uppercase tracking-widest">Our Services</h4>
           <ul className="space-y-3 text-sm text-white/70 font-medium">
             <li className="hover:text-white cursor-default transition-colors">Used Bike Sales</li>
             <li className="hover:text-white cursor-default transition-colors">Second Hand Scooters</li>
@@ -96,7 +96,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Contact Us</h4>
+          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block uppercase tracking-widest">Contact Us</h4>
           <ul className="space-y-4 text-sm text-white/70 font-medium">
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 mt-0.5 shrink-0 text-white/40" />
@@ -120,7 +120,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-white/10 text-center text-xs text-white/30 tracking-widest uppercase font-bold">
+      <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-white/10 text-center text-[10px] text-white/30 tracking-[0.4em] uppercase font-bold">
         <p>&copy; {new Date().getFullYear()} {businessName}. All rights reserved.</p>
       </div>
     </footer>

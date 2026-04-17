@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Bike, CheckCircle2, Camera, Upload, X, Image as ImageIcon, Loader2, Plus } from 'lucide-react';
 import { useFirestore, addDocumentNonBlocking } from '@/firebase';
 import { collection } from 'firebase/firestore';
+import { compressImage } from '@/lib/image-upload';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -30,6 +31,7 @@ export default function SellPage() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
   const db = useFirestore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,33 +49,26 @@ export default function SellPage() {
     },
   });
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
+    setIsCompressing(true);
     const currentImages = form.getValues('images');
     const newImages = [...currentImages];
 
     for (let i = 0; i < files.length; i++) {
       if (newImages.length >= 6) break;
       try {
-        const base64 = await fileToBase64(files[i]);
-        newImages.push(base64);
+        const compressedBase64 = await compressImage(files[i]);
+        newImages.push(compressedBase64);
       } catch (err) {
-        console.error("Error reading file", err);
+        console.error("Error compressing file", err);
       }
     }
 
     form.setValue('images', newImages, { shouldValidate: true });
+    setIsCompressing(false);
   };
 
   const removeImage = (index: number) => {
@@ -245,7 +240,10 @@ export default function SellPage() {
                         <FormLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                           <ImageIcon className="w-4 h-4 text-primary" /> Vehicle Photos (Max 6)
                         </FormLabel>
-                        <span className="text-[10px] text-muted-foreground font-bold">{form.watch('images').length} / 6</span>
+                        <div className="flex items-center gap-4">
+                          {isCompressing && <div className="flex items-center gap-2 text-primary font-bold animate-pulse text-[10px]"><Loader2 className="w-3 h-3 animate-spin" /> Optimizing...</div>}
+                          <span className="text-[10px] text-muted-foreground font-bold">{form.watch('images').length} / 6</span>
+                        </div>
                       </div>
                       
                       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 gap-3">
@@ -271,6 +269,7 @@ export default function SellPage() {
                               accept="image/*" 
                               multiple 
                               onChange={handleImageUpload} 
+                              disabled={isCompressing}
                             />
                           </label>
                         )}
@@ -293,7 +292,7 @@ export default function SellPage() {
                 </div>
 
                 <div className="pt-4">
-                  <Button type="submit" disabled={loading} className="w-full h-14 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform">
+                  <Button type="submit" disabled={loading || isCompressing} className="w-full h-14 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform">
                     {loading ? <Loader2 className="animate-spin" /> : "Request Online Price Evaluation"}
                   </Button>
                   <p className="text-center text-[10px] text-muted-foreground mt-4 uppercase tracking-widest font-bold">

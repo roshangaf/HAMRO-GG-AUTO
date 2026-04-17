@@ -17,6 +17,7 @@ import { generateVehicleDescription } from '@/ai/flows/generate-vehicle-descript
 import { useFirestore, useDoc, useMemoFirebase, updateDocumentNonBlocking } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Vehicle } from '@/types/vehicle';
+import { compressImage } from '@/lib/image-upload';
 
 const formSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -37,6 +38,7 @@ export default function EditVehiclePage() {
   const { toast } = useToast();
   const [generating, setGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
   const db = useFirestore();
 
   const vehicleRef = useMemoFirebase(() => {
@@ -79,19 +81,11 @@ export default function EditVehiclePage() {
     }
   }, [vehicle, form]);
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
+    setIsCompressing(true);
     const currentImages = form.getValues('imageUrls');
     const newImages = [...currentImages];
 
@@ -106,24 +100,21 @@ export default function EditVehiclePage() {
       }
       
       const file = files[i];
-      if (file.size > 1024 * 1024) {
+      try {
+        const compressedBase64 = await compressImage(file);
+        newImages.push(compressedBase64);
+      } catch (err) {
+        console.error("Error processing file", err);
         toast({
           variant: "destructive",
-          title: "File too large",
-          description: `Image ${file.name} is larger than 1MB.`
+          title: "Compression Failed",
+          description: `Failed to process image: ${file.name}`
         });
-        continue;
-      }
-
-      try {
-        const base64 = await fileToBase64(file);
-        newImages.push(base64);
-      } catch (err) {
-        console.error("Error reading file", err);
       }
     }
 
     form.setValue('imageUrls', newImages, { shouldValidate: true });
+    setIsCompressing(false);
   };
 
   const removeImage = (index: number) => {
@@ -227,9 +218,12 @@ export default function EditVehiclePage() {
                   </div>
                   <h3 className="text-xl font-bold font-headline">Vehicle Photos</h3>
                 </div>
-                <span className="text-xs font-bold text-muted-foreground bg-gray-100 px-3 py-1 rounded-full">
-                  {form.watch('imageUrls').length} / 12 Images
-                </span>
+                <div className="flex items-center gap-4">
+                  {isCompressing && <div className="flex items-center gap-2 text-primary font-bold animate-pulse text-xs"><Loader2 className="w-3 h-3 animate-spin" /> Optimizing...</div>}
+                  <span className="text-xs font-bold text-muted-foreground bg-gray-100 px-3 py-1 rounded-full">
+                    {form.watch('imageUrls').length} / 12 Images
+                  </span>
+                </div>
               </div>
               
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
@@ -261,11 +255,15 @@ export default function EditVehiclePage() {
                       accept="image/jpeg,image/png" 
                       multiple 
                       onChange={handleImageUpload} 
+                      disabled={isCompressing}
                     />
                   </label>
                 )}
               </div>
               <FormMessage>{form.formState.errors.imageUrls?.message}</FormMessage>
+              <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest bg-gray-50 p-3 rounded-xl border">
+                Upload multiple JPEGs or PNGs. Large files are automatically compressed for best performance.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -412,7 +410,7 @@ export default function EditVehiclePage() {
             </div>
 
             <div className="pt-8 border-t">
-              <Button type="submit" disabled={isSaving} className="w-full h-16 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.01] transition-transform flex items-center justify-center gap-3">
+              <Button type="submit" disabled={isSaving || isCompressing} className="w-full h-16 bg-primary text-xl font-bold rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.01] transition-transform flex items-center justify-center gap-3">
                 {isSaving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
                 {isSaving ? "Updating..." : "Save Changes"}
               </Button>
