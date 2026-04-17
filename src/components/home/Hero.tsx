@@ -51,7 +51,7 @@ export function Hero() {
                 KATHMANDU'S #1 SECOND-HAND HUB
               </div>
 
-              <h1 className="font-headline font-bold text-5xl md:text-7xl text-foreground leading-[1.1] tracking-tight">
+              <h1 className="font-headline font-bold text-5xl md:text-7xl text-foreground leading-[1.1] tracking-tight text-balance">
                 Ride Your <br />
                 <span className="text-primary">Dream</span> With <br className="hidden md:block" />
                 Confidence
@@ -82,7 +82,7 @@ export function Hero() {
                 </div>
                 <div className="text-left">
                   <p className="font-bold text-xl leading-none">Certified</p>
-                  <p className="text-sm text-muted-foreground font-medium">Quality Check</p>
+                  <p className="text-sm text-muted-foreground font-medium text-nowrap">Quality Check</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -91,7 +91,7 @@ export function Hero() {
                 </div>
                 <div className="text-left">
                   <p className="font-bold text-xl leading-none">Transparent</p>
-                  <p className="text-sm text-muted-foreground font-medium">Fair Pricing</p>
+                  <p className="text-sm text-muted-foreground font-medium text-nowrap">Fair Pricing</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -100,7 +100,7 @@ export function Hero() {
                 </div>
                 <div className="text-left">
                   <p className="font-bold text-xl leading-none">Instant</p>
-                  <p className="text-sm text-muted-foreground font-medium">Exchange</p>
+                  <p className="text-sm text-muted-foreground font-medium text-nowrap">Exchange</p>
                 </div>
               </div>
             </div>
