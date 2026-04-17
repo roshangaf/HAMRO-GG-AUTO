@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -21,7 +22,7 @@ service cloud.firestore {
     }
 
     match /roles_admin/{userId} {
-      allow read: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin());
+      allow read: if isSignedIn();
       allow write: if isSignedIn() && (request.auth.uid == userId || isSuperAdmin());
     }
 
@@ -37,13 +38,12 @@ service cloud.firestore {
 
     match /settings/general {
       allow read: if true;
-      allow write: if isSuperAdmin();
+      allow write: if isAdmin(); // Temporarily allow Admin for setup, revert to isSuperAdmin for prod
     }
 
     match /visitors/{visitorId} {
-      // Allow any staff to read logs to prevent UI permission errors during session sync
       allow read: if isSignedIn();
-      allow write: if isAdmin();
+      allow write: if true; // Allow tracking
     }
 
     match /followups/{followupId} {
