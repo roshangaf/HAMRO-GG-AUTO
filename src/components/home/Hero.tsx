@@ -28,22 +28,23 @@ export function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 w-full py-12 lg:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="text-center lg:text-left space-y-10 order-2 lg:order-1">
-            <div className="space-y-8">
-              <h1 className="font-headline font-bold text-5xl md:text-7xl text-foreground leading-[1.1] tracking-tight flex flex-col items-center lg:items-start gap-4">
-                <span className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8">
-                  <span>Ride Your <span className="text-primary">Dream</span></span>
-                  <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-bold text-[10px] md:text-sm animate-in fade-in slide-in-from-left duration-700 h-fit whitespace-nowrap shadow-sm border border-primary/5">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                    </span>
-                    KATHMANDU'S #1 SECOND-HAND HUB
-                  </div>
+            <div className="space-y-6">
+              {/* Repositioned Badge with high-impact animation */}
+              <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-primary font-bold text-[10px] md:text-sm animate-in fade-in slide-in-from-left duration-1000 h-fit whitespace-nowrap shadow-sm border border-primary/5">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                 </span>
-                <span>With Confidence</span>
+                KATHMANDU'S #1 SECOND-HAND HUB
+              </div>
+
+              <h1 className="font-headline font-bold text-5xl md:text-7xl text-foreground leading-[1.1] tracking-tight">
+                Ride Your <br />
+                <span className="text-primary">Dream</span> With <br className="hidden md:block" />
+                Confidence
               </h1>
               
-              <p className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium">
                 Find reliable, inspected, and fairly priced second-hand bikes and scooters. Your journey to a perfect ride starts here.
               </p>
             </div>
@@ -63,30 +64,30 @@ export function Hero() {
             
             <div className="flex flex-wrap justify-center lg:justify-start gap-10 pt-4">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-100 rounded-xl">
+                <div className="p-3 bg-green-100 rounded-xl shadow-sm">
                   <ShieldCheck className="w-8 h-8 text-green-600" />
                 </div>
                 <div className="text-left">
                   <p className="font-bold text-xl leading-none">Certified</p>
-                  <p className="text-sm text-muted-foreground">Quality Check</p>
+                  <p className="text-sm text-muted-foreground font-medium">Quality Check</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 rounded-xl">
+                <div className="p-3 bg-blue-100 rounded-xl shadow-sm">
                   <BadgeCheck className="w-8 h-8 text-blue-600" />
                 </div>
                 <div className="text-left">
                   <p className="font-bold text-xl leading-none">Transparent</p>
-                  <p className="text-sm text-muted-foreground">Fair Pricing</p>
+                  <p className="text-sm text-muted-foreground font-medium">Fair Pricing</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-orange-100 rounded-xl">
+                <div className="p-3 bg-orange-100 rounded-xl shadow-sm">
                   <Clock className="w-8 h-8 text-orange-600" />
                 </div>
                 <div className="text-left">
                   <p className="font-bold text-xl leading-none">Instant</p>
-                  <p className="text-sm text-muted-foreground">Exchange</p>
+                  <p className="text-sm text-muted-foreground font-medium">Exchange</p>
                 </div>
               </div>
             </div>
@@ -95,14 +96,12 @@ export function Hero() {
           <div className="relative group order-1 lg:order-2 max-w-lg mx-auto w-full px-4 lg:px-0">
             <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl group-hover:bg-primary/30 transition-all duration-500" />
             <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.01] aspect-[4/5] lg:min-h-[600px] border-4 border-white/50 bg-gray-50">
-              <Image 
+              <img 
                 src={heroImage} 
                 alt="Premium Showroom Bike" 
-                fill
-                className="object-cover"
-                priority={true}
+                className="w-full h-full object-cover"
                 loading="eager"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                fetchPriority="high"
                 data-ai-hint="sports motorcycle"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

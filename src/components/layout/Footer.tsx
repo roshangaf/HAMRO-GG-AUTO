@@ -27,7 +27,7 @@ export function Footer() {
     <footer className="bg-primary text-white pt-16 pb-8 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
         <div className="space-y-8">
-          <Link href="/" className="flex items-center gap-5 group">
+          <Link href="/" className="flex items-center gap-4 group">
             <div className="w-16 h-16 bg-white rounded-full group-hover:rotate-6 transition-transform overflow-hidden flex items-center justify-center relative border-4 border-white/20 shrink-0 shadow-lg">
               <img 
                 src={logoImage} 
@@ -35,19 +35,19 @@ export function Footer() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-[10px] font-bold tracking-[0.3em] text-white/70 leading-tight uppercase">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-bold tracking-[0.4em] text-white/70 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-normal leading-tight text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-tight leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-[0.2em] text-white/50 leading-tight uppercase">
+              <span className="text-[10px] font-bold tracking-[0.3em] text-white/50 leading-none uppercase">
                 Enterprises
               </span>
             </div>
           </Link>
-          <p className="text-sm text-white/70 leading-relaxed max-w-xs">
+          <p className="text-sm text-white/70 leading-relaxed max-w-xs font-medium">
             Reliable second-hand bikes and scooters showroom in {address.split(',')[0]}. 
             We offer sales, exchange, and servicing for all major brands.
           </p>
@@ -56,7 +56,7 @@ export function Footer() {
               href={CONTACT_INFO.facebook} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full"
+              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full shadow-sm"
               title="Follow us on Facebook"
             >
               <Facebook className="w-5 h-5" />
@@ -65,7 +65,7 @@ export function Footer() {
               href={whatsappUrl} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full"
+              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full shadow-sm"
               title="Chat on WhatsApp"
             >
               <MessageCircle className="w-5 h-5" />
@@ -75,7 +75,7 @@ export function Footer() {
 
         <div>
           <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Quick Links</h4>
-          <ul className="space-y-3 text-sm text-white/70">
+          <ul className="space-y-3 text-sm text-white/70 font-medium">
             <li><Link href="/inventory" className="hover:text-white transition-colors">All Inventory</Link></li>
             <li><Link href="/sell" className="hover:text-white transition-colors">Sell Your Bike</Link></li>
             <li><Link href="/exchange" className="hover:text-white transition-colors">Exchange Offers</Link></li>
@@ -86,7 +86,7 @@ export function Footer() {
 
         <div>
           <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Our Services</h4>
-          <ul className="space-y-3 text-sm text-white/70">
+          <ul className="space-y-3 text-sm text-white/70 font-medium">
             <li className="hover:text-white cursor-default transition-colors">Used Bike Sales</li>
             <li className="hover:text-white cursor-default transition-colors">Second Hand Scooters</li>
             <li className="hover:text-white cursor-default transition-colors">Easy Exchange Facility</li>
@@ -97,7 +97,7 @@ export function Footer() {
 
         <div>
           <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block">Contact Us</h4>
-          <ul className="space-y-4 text-sm text-white/70">
+          <ul className="space-y-4 text-sm text-white/70 font-medium">
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 mt-0.5 shrink-0 text-white/40" />
               <a 
@@ -120,7 +120,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-white/10 text-center text-xs text-white/30 tracking-widest uppercase">
+      <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-white/10 text-center text-xs text-white/30 tracking-widest uppercase font-bold">
         <p>&copy; {new Date().getFullYear()} {businessName}. All rights reserved.</p>
       </div>
     </footer>

@@ -57,23 +57,23 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-24 items-center">
-          <Link href="/" className="flex items-center gap-5 group">
+          <Link href="/" className="flex items-center gap-4 group">
             <div className="w-14 h-14 bg-white rounded-full group-hover:rotate-6 transition-transform duration-500 shadow-md border-2 border-primary/5 overflow-hidden flex items-center justify-center relative shrink-0">
               <img 
                 src={logoImage} 
                 alt="G&G Auto Logo" 
                 className="w-full h-full object-cover"
-                fetchpriority="high"
+                fetchPriority="high"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-[10px] font-bold tracking-[0.3em] text-muted-foreground/60 leading-tight uppercase">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-bold tracking-[0.4em] text-muted-foreground/60 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl md:text-3xl tracking-normal leading-tight text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl md:text-3xl tracking-tight leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-[0.2em] text-foreground/30 leading-tight uppercase">
+              <span className="text-[10px] font-bold tracking-[0.3em] text-foreground/30 leading-none uppercase">
                 Enterprises
               </span>
             </div>
@@ -85,7 +85,7 @@ export function Navbar() {
               <Link 
                 key={link.name} 
                 href={link.href}
-                className={`text-sm font-semibold transition-colors flex items-center gap-2 ${
+                className={`text-sm font-bold transition-colors flex items-center gap-2 ${
                   pathname === link.href ? 'text-primary' : 'text-foreground/70 hover:text-primary'
                 }`}
               >
@@ -137,7 +137,7 @@ export function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold text-foreground/80 hover:bg-gray-50 hover:text-primary transition-all"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-foreground/80 hover:bg-gray-50 hover:text-primary transition-all"
                 onClick={() => setIsOpen(false)}
               >
                 {link.icon}
@@ -147,7 +147,7 @@ export function Navbar() {
             {!isAdminPage && (
               <Link
                 href="/book-service"
-                className="block px-4 py-3 rounded-xl text-base font-semibold text-primary hover:bg-primary/5 transition-all flex items-center gap-2"
+                className="block px-4 py-3 rounded-xl text-base font-bold text-primary hover:bg-primary/5 transition-all flex items-center gap-2"
                 onClick={() => setIsOpen(false)}
               >
                 <Wrench className="w-4 h-4" /> Book Appointment
