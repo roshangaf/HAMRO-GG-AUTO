@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Phone, Mail, MapPin, Facebook, MessageCircle } from 'lucide-react';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { collection, doc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 import { CONTACT_INFO } from '@/lib/constants';
 
 export function Footer() {
@@ -33,13 +33,14 @@ export function Footer() {
                 src={logoImage} 
                 alt="Logo" 
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="flex flex-col">
               <span className="text-[10px] font-bold tracking-[0.4em] text-white/70 leading-none uppercase mb-2">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-wide leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-[0.05em] leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
               <span className="text-[10px] font-bold tracking-[0.3em] text-white/50 leading-none uppercase mt-2">
