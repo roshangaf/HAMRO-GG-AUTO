@@ -32,7 +32,7 @@ export function Navbar() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // High Fetch Priority Branding
+  // High Fetch Priority Branding: Initial load from constants, then sync with DB
   const logoImage = settings?.logo_url || CONTACT_INFO.logoUrl;
 
   const navLinks = [
@@ -58,7 +58,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-24 items-center">
-          <Link href="/" className="flex items-center gap-4 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <div className="w-14 h-14 bg-white rounded-full group-hover:rotate-6 transition-transform duration-500 shadow-md border-2 border-primary/5 overflow-hidden flex items-center justify-center relative shrink-0">
               <img 
                 src={logoImage} 
@@ -69,13 +69,13 @@ export function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-[9px] font-bold tracking-[0.5em] text-muted-foreground/60 leading-none uppercase mb-2">
+              <span className="text-[10px] font-bold tracking-tight text-muted-foreground/70 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-xl md:text-2xl tracking-[0.1em] leading-none text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-xl md:text-2xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[9px] font-bold tracking-[0.4em] text-foreground/30 leading-none uppercase mt-2">
+              <span className="text-[10px] font-bold tracking-tight text-foreground/40 leading-none uppercase">
                 Enterprises
               </span>
             </div>

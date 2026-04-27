@@ -27,7 +27,7 @@ export function Footer() {
     <footer className="bg-primary text-white pt-16 pb-8 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
         <div className="space-y-8">
-          <Link href="/" className="flex items-center gap-4 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <div className="w-16 h-16 bg-white rounded-full group-hover:rotate-6 transition-transform overflow-hidden flex items-center justify-center relative border-4 border-white/20 shrink-0 shadow-lg">
               <img 
                 src={logoImage} 
@@ -37,13 +37,13 @@ export function Footer() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-bold tracking-[0.5em] text-white/70 leading-none uppercase mb-2">
+              <span className="text-[10px] font-bold tracking-tight text-white/70 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-[0.1em] leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl md:text-3xl tracking-tighter leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-[0.4em] text-white/50 leading-none uppercase mt-2">
+              <span className="text-[10px] font-bold tracking-tight text-white/50 leading-none uppercase">
                 Enterprises
               </span>
             </div>
