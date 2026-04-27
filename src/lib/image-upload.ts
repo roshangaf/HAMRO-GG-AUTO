@@ -1,14 +1,22 @@
+'use client';
+
 /**
  * Utility for handling client-side image compression.
  * Resizes large images and applies JPEG compression to ensure they stay under storage limits.
  */
 export async function compressImage(file: File, maxWidth = 1200, quality = 0.7): Promise<string> {
+  // Validate if the file is actually an image
+  if (!file.type.startsWith('image/')) {
+    throw new Error('File provided is not an image');
+  }
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    
     reader.onload = (event) => {
       const img = new Image();
-      img.src = event.target?.result as string;
+      
+      // CRITICAL: Attach listeners BEFORE setting src to catch all states
       img.onload = () => {
         const canvas = document.createElement('canvas');
         let width = img.width;
@@ -22,6 +30,7 @@ export async function compressImage(file: File, maxWidth = 1200, quality = 0.7):
 
         canvas.width = width;
         canvas.height = height;
+        
         const ctx = canvas.getContext('2d');
         if (!ctx) {
           reject(new Error('Canvas context not available'));
@@ -32,14 +41,30 @@ export async function compressImage(file: File, maxWidth = 1200, quality = 0.7):
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, width, height);
         
+        // Draw the image onto the canvas
         ctx.drawImage(img, 0, 0, width, height);
         
-        // Convert to base64 with JPEG compression
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        resolve(dataUrl);
+        try {
+          // Convert to base64 with JPEG compression
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          resolve(dataUrl);
+        } catch (err) {
+          reject(new Error('Failed to generate data URL from canvas'));
+        }
       };
-      img.onerror = () => reject(new Error('Failed to load image for compression'));
+
+      img.onerror = () => {
+        reject(new Error(`Failed to load image for compression: ${file.name}`));
+      };
+
+      // Set the source after handlers are ready
+      img.src = event.target?.result as string;
     };
-    reader.onerror = () => reject(new Error('Failed to read file'));
+
+    reader.onerror = () => {
+      reject(new Error(`Failed to read file: ${file.name}`));
+    };
+
+    reader.readAsDataURL(file);
   });
 }

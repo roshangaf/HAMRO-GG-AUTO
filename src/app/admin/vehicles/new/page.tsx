@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState } from 'react';
@@ -57,10 +56,10 @@ export default function AddVehiclePage() {
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
+    if (!files || files.length === 0) return;
 
     setIsCompressing(true);
-    const currentImages = form.getValues('imageUrls');
+    const currentImages = form.getValues('imageUrls') || [];
     const newImages = [...currentImages];
 
     for (let i = 0; i < files.length; i++) {
@@ -68,7 +67,7 @@ export default function AddVehiclePage() {
         toast({
           variant: "destructive",
           title: "Limit Reached",
-          description: "Maximum 12 images allowed."
+          description: "Maximum 12 images allowed per vehicle."
         });
         break;
       }
@@ -79,17 +78,25 @@ export default function AddVehiclePage() {
         const compressedBase64 = await compressImage(file);
         newImages.push(compressedBase64);
       } catch (err) {
-        console.error("Error compressing file", err);
+        console.error("Error processing file:", err);
         toast({
           variant: "destructive",
-          title: "Compression Failed",
-          description: `Failed to process image: ${file.name}`
+          title: "Upload Error",
+          description: `Could not process ${file.name}. Ensure it's a valid image.`
         });
       }
     }
 
-    form.setValue('imageUrls', newImages, { shouldValidate: true });
+    // Explicitly update form state to trigger watchers
+    form.setValue('imageUrls', newImages, { 
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true 
+    });
     setIsCompressing(false);
+    
+    // Reset the input value so the same file can be picked again if removed
+    e.target.value = '';
   };
 
   const removeImage = (index: number) => {
