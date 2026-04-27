@@ -8,15 +8,21 @@ import Link from 'next/link';
 import { Shield, Clock, CheckCircle, ArrowRight, Calendar, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useFirestore, useCollection, useMemoFirebase, useDoc } from '@/firebase';
-import { collection, doc } from 'firebase/firestore';
+import { collection, doc, query, limit, orderBy } from 'firebase/firestore';
 import { Vehicle } from '@/types/vehicle';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
   const db = useFirestore();
+  
+  // High Performance Query: Limit to 8 most recent for featured section
   const vehiclesQuery = useMemoFirebase(() => {
     if (!db) return null;
-    return collection(db, 'vehicles');
+    return query(
+      collection(db, 'vehicles'),
+      orderBy('created_at', 'desc'),
+      limit(8)
+    );
   }, [db]);
 
   const settingsRef = useMemoFirebase(() => {
@@ -27,7 +33,7 @@ export default function Home() {
   const { data: vehicles, isLoading } = useCollection<Vehicle>(vehiclesQuery);
   const { data: settings } = useDoc(settingsRef);
   
-  const featuredVehicles = vehicles?.slice(0, 4) || [];
+  const featuredVehicles = vehicles || [];
   const maintenancePlaceholder = PlaceHolderImages.find(img => img.id === 'maintenance')?.imageUrl;
   const serviceImage = settings?.service_image_url || maintenancePlaceholder || "https://picsum.photos/seed/service/800/600";
 

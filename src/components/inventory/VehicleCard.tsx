@@ -24,7 +24,7 @@ export function VehicleCard({ vehicle, isPriority = false }: VehicleCardProps) {
             fill
             priority={isPriority}
             loading={isPriority ? "eager" : "lazy"}
-            sizes="(max-width: 768px) 50vw, 25vw"
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
         </div>
