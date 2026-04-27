@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from 'next/link';
@@ -39,7 +40,7 @@ export function Footer() {
               <span className="text-[9px] font-bold tracking-tighter text-white/80 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-xl md:text-2xl tracking-tighter leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-lg md:text-xl tracking-tight leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
               <span className="text-[9px] font-bold tracking-tighter text-white/50 leading-none uppercase">

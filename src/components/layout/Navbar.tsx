@@ -72,7 +72,7 @@ export function Navbar() {
               <span className="text-[9px] font-bold tracking-tighter text-muted-foreground/80 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-lg md:text-xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-lg md:text-xl tracking-tight leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
               <span className="text-[9px] font-bold tracking-tighter text-foreground/40 leading-none uppercase">
