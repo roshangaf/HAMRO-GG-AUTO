@@ -36,7 +36,7 @@ export function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="text-center lg:text-left space-y-10 order-2 lg:order-1">
             <div className="space-y-6">
-              {/* Premium Badge: Desktop Only with Slide Interaction */}
+              {/* Premium Badge: Desktop Only with Smooth Slide Interaction */}
               <div 
                 onClick={handleBadgeClick}
                 className={cn(

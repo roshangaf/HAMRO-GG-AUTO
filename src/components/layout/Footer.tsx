@@ -37,13 +37,13 @@ export function Footer() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-bold tracking-[0.4em] text-white/70 leading-none uppercase mb-2">
+              <span className="text-[10px] font-bold tracking-[0.5em] text-white/70 leading-none uppercase mb-2">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl tracking-[0.05em] leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-2xl tracking-[0.1em] leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-[0.3em] text-white/50 leading-none uppercase mt-2">
+              <span className="text-[10px] font-bold tracking-[0.4em] text-white/50 leading-none uppercase mt-2">
                 Enterprises
               </span>
             </div>
