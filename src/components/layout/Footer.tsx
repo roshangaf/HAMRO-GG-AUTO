@@ -36,14 +36,14 @@ export function Footer() {
                 loading="lazy"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-[10px] font-bold tracking-tight text-white/70 leading-none uppercase">
+            <div className="flex flex-col -space-y-1">
+              <span className="text-[10px] font-bold tracking-tighter text-white/70 leading-none uppercase">
                 Hamro
               </span>
               <span className="font-headline font-black text-2xl md:text-3xl tracking-tighter leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-tight text-white/50 leading-none uppercase">
+              <span className="text-[10px] font-bold tracking-tighter text-white/50 leading-none uppercase">
                 Enterprises
               </span>
             </div>

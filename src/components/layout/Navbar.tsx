@@ -68,14 +68,14 @@ export function Navbar() {
                 fetchPriority="high"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-[10px] font-bold tracking-tight text-muted-foreground/70 leading-none uppercase">
+            <div className="flex flex-col -space-y-1">
+              <span className="text-[10px] font-bold tracking-tighter text-muted-foreground/70 leading-none uppercase">
                 Hamro
               </span>
               <span className="font-headline font-black text-xl md:text-2xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-tight text-foreground/40 leading-none uppercase">
+              <span className="text-[10px] font-bold tracking-tighter text-foreground/40 leading-none uppercase">
                 Enterprises
               </span>
             </div>

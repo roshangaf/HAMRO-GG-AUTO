@@ -100,7 +100,6 @@ export default function SettingsPage() {
     setUpdatingField(fieldName);
     try {
       const docRef = doc(db, 'settings', 'general');
-      // Using setDocumentNonBlocking with merge: true is more robust for permission checks
       setDocumentNonBlocking(docRef, { [fieldName]: value }, { merge: true });
       toast({ title: "Updated", description: `${fieldName.replace('_url', '').replace('_', ' ')} has been saved.` });
     } catch (err) {
@@ -275,10 +274,15 @@ export default function SettingsPage() {
                                 <div className="space-y-4">
                                   <div className="flex gap-4 items-center">
                                     <div className="flex-1">
-                                      <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-white text-xs border-dashed" value={field.value ? "Image Loaded (Base64)" : ""} />
+                                      <Input 
+                                        placeholder="Paste URL or upload file" 
+                                        className="h-12 rounded-xl bg-white text-xs border-dashed" 
+                                        value={field.value?.startsWith('data:') ? "File Uploaded (Base64)" : field.value}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                      />
                                     </div>
-                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm">
-                                      <Upload className="w-4 h-4" /> Change Logo
+                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm shrink-0">
+                                      <Upload className="w-4 h-4" /> Upload
                                       <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'logo_url')} />
                                     </label>
                                   </div>
@@ -323,10 +327,15 @@ export default function SettingsPage() {
                                 <div className="space-y-4">
                                   <div className="flex gap-4 items-center">
                                     <div className="flex-1">
-                                      <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-white text-xs border-dashed" value={field.value ? "Image Loaded (Base64)" : ""} />
+                                      <Input 
+                                        placeholder="Paste URL or upload file" 
+                                        className="h-12 rounded-xl bg-white text-xs border-dashed" 
+                                        value={field.value?.startsWith('data:') ? "File Uploaded (Base64)" : field.value}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                      />
                                     </div>
-                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm">
-                                      <Upload className="w-4 h-4" /> Change Banner
+                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm shrink-0">
+                                      <Upload className="w-4 h-4" /> Upload
                                       <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'hero_image_url')} />
                                     </label>
                                   </div>
@@ -371,10 +380,15 @@ export default function SettingsPage() {
                                 <div className="space-y-4">
                                   <div className="flex gap-4 items-center">
                                     <div className="flex-1">
-                                      <Input placeholder="Base64 encoded image" readOnly className="h-12 rounded-xl bg-white text-xs border-dashed" value={field.value ? "Image Loaded (Base64)" : ""} />
+                                      <Input 
+                                        placeholder="Paste URL or upload file" 
+                                        className="h-12 rounded-xl bg-white text-xs border-dashed" 
+                                        value={field.value?.startsWith('data:') ? "File Uploaded (Base64)" : field.value}
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                      />
                                     </div>
-                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm">
-                                      <Upload className="w-4 h-4" /> Change Image
+                                    <label className="h-12 px-6 rounded-xl bg-white border-2 border-primary/20 flex items-center justify-center cursor-pointer hover:bg-primary/5 transition-colors gap-2 text-sm font-bold shadow-sm shrink-0">
+                                      <Upload className="w-4 h-4" /> Upload
                                       <input type="file" className="hidden" accept="image/jpeg,image/png" onChange={(e) => handleFileUpload(e, 'service_image_url')} />
                                     </label>
                                   </div>
