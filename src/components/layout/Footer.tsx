@@ -24,11 +24,11 @@ export function Footer() {
   const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}`;
 
   return (
-    <footer className="bg-primary text-white pt-16 pb-8 border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
-        <div className="space-y-8">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-16 h-16 bg-white rounded-full group-hover:rotate-6 transition-transform overflow-hidden flex items-center justify-center relative border-4 border-white/20 shrink-0 shadow-lg">
+    <footer className="bg-primary text-white pt-12 pb-8">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="space-y-6">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-12 h-12 bg-white rounded-full overflow-hidden flex items-center justify-center relative border shadow-sm">
               <img 
                 src={logoImage} 
                 alt="Logo" 
@@ -37,92 +37,71 @@ export function Footer() {
               />
             </div>
             <div className="flex flex-col -space-y-1">
-              <span className="text-[10px] font-bold tracking-tighter text-white/70 leading-none uppercase">
+              <span className="text-[9px] font-bold tracking-tighter text-white/80 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-2xl md:text-3xl tracking-tighter leading-none text-white uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-xl md:text-2xl tracking-tighter leading-none text-white uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-tighter text-white/50 leading-none uppercase">
+              <span className="text-[9px] font-bold tracking-tighter text-white/50 leading-none uppercase">
                 Enterprises
               </span>
             </div>
           </Link>
-          <p className="text-sm text-white/70 leading-relaxed max-w-xs font-medium">
+          <p className="text-sm text-white/70 leading-relaxed font-medium">
             Reliable second-hand bikes and scooters showroom in {address.split(',')[0]}. 
-            We offer sales, exchange, and servicing for all major brands.
+            Sales, exchange, and servicing.
           </p>
           <div className="flex gap-4">
-            <a 
-              href={CONTACT_INFO.facebook} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full shadow-sm"
-              title="Follow us on Facebook"
-            >
+            <a href={CONTACT_INFO.facebook} target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors">
               <Facebook className="w-5 h-5" />
             </a>
-            <a 
-              href={whatsappUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:bg-white hover:text-primary transition-all bg-white/10 p-2.5 rounded-full shadow-sm"
-              title="Chat on WhatsApp"
-            >
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors">
               <MessageCircle className="w-5 h-5" />
             </a>
           </div>
         </div>
 
         <div>
-          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block uppercase tracking-widest">Quick Links</h4>
-          <ul className="space-y-3 text-sm text-white/70 font-medium">
+          <h4 className="font-bold text-lg mb-4 uppercase tracking-wider">Quick Links</h4>
+          <ul className="space-y-2 text-sm text-white/70 font-medium">
             <li><Link href="/inventory" className="hover:text-white transition-colors">All Inventory</Link></li>
             <li><Link href="/sell" className="hover:text-white transition-colors">Sell Your Bike</Link></li>
             <li><Link href="/exchange" className="hover:text-white transition-colors">Exchange Offers</Link></li>
-            <li><Link href="/services" className="hover:text-white transition-colors">Our Services</Link></li>
             <li><Link href="/admin/login" className="hover:text-white transition-colors">Staff Login</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block uppercase tracking-widest">Our Services</h4>
-          <ul className="space-y-3 text-sm text-white/70 font-medium">
-            <li className="hover:text-white cursor-default transition-colors">Used Bike Sales</li>
-            <li className="hover:text-white cursor-default transition-colors">Second Hand Scooters</li>
-            <li className="hover:text-white cursor-default transition-colors">Easy Exchange Facility</li>
-            <li className="hover:text-white cursor-default transition-colors">Insurance Transfer</li>
-            <li className="hover:text-white cursor-default transition-colors">Workshop Services</li>
+          <h4 className="font-bold text-lg mb-4 uppercase tracking-wider">Services</h4>
+          <ul className="space-y-2 text-sm text-white/70 font-medium">
+            <li className="hover:text-white transition-colors">Used Bike Sales</li>
+            <li className="hover:text-white transition-colors">Easy Exchange</li>
+            <li className="hover:text-white transition-colors">Insurance Renewal</li>
+            <li className="hover:text-white transition-colors">Workshop Services</li>
           </ul>
         </div>
 
         <div>
-          <h4 className="font-headline font-bold text-lg mb-6 border-b border-white/10 pb-2 inline-block uppercase tracking-widest">Contact Us</h4>
-          <ul className="space-y-4 text-sm text-white/70 font-medium">
+          <h4 className="font-bold text-lg mb-4 uppercase tracking-wider">Contact Us</h4>
+          <ul className="space-y-3 text-sm text-white/70 font-medium">
             <li className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 mt-0.5 shrink-0 text-white/40" />
-              <a 
-                href={CONTACT_INFO.mapsLink} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors leading-relaxed"
-              >
-                {address}
-              </a>
+              <MapPin className="w-4 h-4 mt-1 shrink-0" />
+              <span>{address}</span>
             </li>
             <li className="flex items-center gap-3">
-              <Phone className="w-5 h-5 shrink-0 text-white/40" />
-              <a href={`tel:${contactPhone}`} className="hover:text-white transition-colors font-bold text-base">{contactPhone}</a>
+              <Phone className="w-4 h-4 shrink-0" />
+              <a href={`tel:${contactPhone}`} className="hover:text-white">{contactPhone}</a>
             </li>
             <li className="flex items-center gap-3">
-              <Mail className="w-5 h-5 shrink-0 text-white/40" />
-              <a href={`mailto:${contactEmail}`} className="hover:text-white transition-colors">{contactEmail}</a>
+              <Mail className="w-4 h-4 shrink-0" />
+              <a href={`mailto:${contactEmail}`} className="hover:text-white">{contactEmail}</a>
             </li>
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-white/10 text-center text-[10px] text-white/30 tracking-[0.4em] uppercase font-bold">
-        <p>&copy; {new Date().getFullYear()} {businessName}. All rights reserved.</p>
+      <div className="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-[10px] text-white/30 tracking-widest uppercase font-bold">
+        <p>&copy; {new Date().getFullYear()} {businessName}.</p>
       </div>
     </footer>
   );

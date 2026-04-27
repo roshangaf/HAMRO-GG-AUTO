@@ -57,38 +57,38 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-24 items-center">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-14 h-14 bg-white rounded-full group-hover:rotate-6 transition-transform duration-500 shadow-md border-2 border-primary/5 overflow-hidden flex items-center justify-center relative shrink-0">
+        <div className="flex justify-between h-20 items-center">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-12 h-12 bg-white rounded-full group-hover:scale-105 transition-transform duration-300 shadow-sm border overflow-hidden flex items-center justify-center relative shrink-0">
               <img 
                 src={logoImage} 
-                alt="G&G Auto Logo" 
+                alt="Logo" 
                 className="w-full h-full object-cover"
                 loading="eager"
                 fetchPriority="high"
               />
             </div>
             <div className="flex flex-col -space-y-1">
-              <span className="text-[10px] font-bold tracking-tighter text-muted-foreground/70 leading-none uppercase">
+              <span className="text-[9px] font-bold tracking-tighter text-muted-foreground/80 leading-none uppercase">
                 Hamro
               </span>
-              <span className="font-headline font-black text-xl md:text-2xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
+              <span className="font-headline font-black text-lg md:text-xl tracking-tighter leading-none text-primary uppercase whitespace-nowrap">
                 G&G AUTO
               </span>
-              <span className="text-[10px] font-bold tracking-tighter text-foreground/40 leading-none uppercase">
+              <span className="text-[9px] font-bold tracking-tighter text-foreground/40 leading-none uppercase">
                 Enterprises
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {links.map((link) => (
               <Link 
                 key={link.name} 
                 href={link.href}
-                className={`text-sm font-bold transition-colors flex items-center gap-2 tracking-wide ${
-                  pathname === link.href ? 'text-primary underline decoration-2 underline-offset-8' : 'text-foreground/70 hover:text-primary'
+                className={`text-sm font-bold transition-colors flex items-center gap-2 ${
+                  pathname === link.href ? 'text-primary' : 'text-foreground/70 hover:text-primary'
                 }`}
               >
                 {link.icon}
@@ -96,23 +96,21 @@ export function Navbar() {
               </Link>
             ))}
             
-            <div className="h-6 w-px bg-gray-200 mx-2" />
-            
             <div className="flex items-center gap-3">
               {isAdminPage ? (
                 <div className="flex items-center gap-3">
                   {isSuperAdmin && <Badge className="bg-primary/10 text-primary border-primary/20 font-black">SUPER ADMIN</Badge>}
-                  <Button variant="outline" className="font-bold gap-2 rounded-full border-2" asChild>
+                  <Button variant="outline" size="sm" className="font-bold gap-2 rounded-full" asChild>
                     <Link href="/"><Bike className="w-4 h-4" /> View Site</Link>
                   </Button>
                 </div>
               ) : (
                 <>
-                  <Button variant="ghost" className="font-bold text-primary gap-2 hover:bg-primary/5" asChild>
-                    <Link href="/book-service"><Wrench className="w-4 h-4" /> Book Service</Link>
+                  <Button variant="ghost" size="sm" className="font-bold text-primary gap-2" asChild>
+                    <Link href="/book-service"><Wrench className="w-4 h-4" /> Service</Link>
                   </Button>
-                  <Button className="font-bold rounded-full px-6 shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all" asChild>
-                    <Link href="/inventory">Browse Bikes</Link>
+                  <Button size="sm" className="font-bold rounded-full px-4 shadow-lg shadow-primary/20" asChild>
+                    <Link href="/inventory">Browse</Link>
                   </Button>
                 </>
               )}
@@ -123,9 +121,9 @@ export function Navbar() {
           <div className="md:hidden flex items-center">
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-lg bg-gray-50"
             >
-              {isOpen ? <X className="h-6 w-6 text-foreground" /> : <Menu className="h-6 w-6 text-foreground" />}
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
@@ -133,29 +131,17 @@ export function Navbar() {
 
       {/* Mobile Nav */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 animate-in slide-in-from-top duration-300">
-          <div className="px-4 pt-4 pb-6 space-y-2">
-            {links.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-foreground/80 hover:bg-gray-50 hover:text-primary transition-all"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.icon}
-                {link.name}
-              </Link>
-            ))}
-            {!isAdminPage && (
-              <Link
-                href="/book-service"
-                className="block px-4 py-3 rounded-xl text-base font-bold text-primary hover:bg-primary/5 transition-all flex items-center gap-2"
-                onClick={() => setIsOpen(false)}
-              >
-                <Wrench className="w-4 h-4" /> Book Appointment
-              </Link>
-            )}
-          </div>
+        <div className="md:hidden bg-white border-t border-gray-100 p-4 space-y-2">
+          {links.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="block px-4 py-2 rounded-lg text-sm font-bold text-foreground/80"
+              onClick={() => setIsOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
         </div>
       )}
     </nav>
