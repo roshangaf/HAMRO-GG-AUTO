@@ -1,4 +1,3 @@
-
 "use client"
 
 import Link from 'next/link';
@@ -28,7 +27,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-6">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-12 h-12 bg-white rounded-full overflow-hidden flex items-center justify-center relative border shadow-sm">
+            <div className="w-12 h-12 bg-white rounded-full overflow-hidden flex items-center justify-center relative border shadow-sm shrink-0">
               <img 
                 src={logoImage} 
                 alt="Logo" 
