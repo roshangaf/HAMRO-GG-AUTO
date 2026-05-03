@@ -3,6 +3,7 @@
 
 import { Hero } from '@/components/home/Hero';
 import { VehicleCard } from '@/components/inventory/VehicleCard';
+import { VehicleSkeleton } from '@/components/inventory/VehicleSkeleton';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Shield, Clock, CheckCircle, ArrowRight, Calendar, Loader2 } from 'lucide-react';
@@ -86,15 +87,11 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 min-h-[400px]">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {isLoading ? (
-            <div className="col-span-full flex flex-col items-center justify-center gap-6 py-20 bg-gray-50/50 rounded-[3rem] border border-dashed">
-              <Loader2 className="w-14 h-14 animate-spin text-primary" />
-              <div className="text-center">
-                <p className="text-2xl font-black font-headline text-foreground tracking-tight">Inventory is loading...</p>
-                <p className="text-muted-foreground font-medium">Fetching Kathmandu's best collection for you</p>
-              </div>
-            </div>
+            Array.from({ length: 4 }).map((_, i) => (
+              <VehicleSkeleton key={i} />
+            ))
           ) : (
             featuredVehicles.map((vehicle, index) => (
               <VehicleCard key={vehicle.id} vehicle={vehicle} isPriority={index < 4} />

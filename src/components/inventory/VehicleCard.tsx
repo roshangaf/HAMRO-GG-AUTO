@@ -1,4 +1,6 @@
 
+"use client"
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Gauge, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -15,7 +17,7 @@ export function VehicleCard({ vehicle, isPriority = false }: VehicleCardProps) {
   const isSold = vehicle.status === 'sold';
   
   return (
-    <Card className="overflow-hidden group hover:shadow-2xl transition-all duration-500 border-none bg-white rounded-2xl md:rounded-3xl">
+    <Card className="overflow-hidden group hover:shadow-2xl transition-all duration-500 border-none bg-white rounded-2xl md:rounded-3xl shadow-sm">
       <Link href={`/inventory/${vehicle.id}`} className="block relative">
         <div className="aspect-[4/3] overflow-hidden relative">
           <Image 
@@ -24,7 +26,7 @@ export function VehicleCard({ vehicle, isPriority = false }: VehicleCardProps) {
             fill
             priority={isPriority}
             loading={isPriority ? "eager" : "lazy"}
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
         </div>

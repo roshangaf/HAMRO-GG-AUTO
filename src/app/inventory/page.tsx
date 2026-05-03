@@ -3,9 +3,10 @@
 
 import { useState, useMemo } from 'react';
 import { VehicleCard } from '@/components/inventory/VehicleCard';
+import { VehicleSkeleton } from '@/components/inventory/VehicleSkeleton';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Loader2, Bike } from 'lucide-react';
+import { Search, Bike } from 'lucide-react';
 import { BRANDS } from '@/lib/constants';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
@@ -100,20 +101,13 @@ export default function InventoryPage() {
       </div>
 
       {/* Results */}
-      {isLoading ? (
-        <div className="py-32 flex flex-col items-center justify-center gap-6 bg-white rounded-[3rem] border border-dashed">
-          <div className="relative">
-            <Loader2 className="w-16 h-16 animate-spin text-primary" />
-            <Bike className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 text-primary" />
-          </div>
-          <div className="text-center">
-            <h3 className="text-3xl font-black font-headline tracking-tight">Inventory is loading...</h3>
-            <p className="text-muted-foreground font-medium">Syncing with our showroom floor</p>
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
-          {filteredVehicles.length > 0 ? (
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
+        {isLoading ? (
+          Array.from({ length: 8 }).map((_, i) => (
+            <VehicleSkeleton key={i} />
+          ))
+        ) : (
+          filteredVehicles.length > 0 ? (
             filteredVehicles.map(vehicle => (
               <VehicleCard key={vehicle.id} vehicle={vehicle} />
             ))
@@ -131,9 +125,9 @@ export default function InventoryPage() {
                 Clear all filters
               </button>
             </div>
-          )}
-        </div>
-      )}
+          )
+        )}
+      </div>
     </div>
   );
 }
