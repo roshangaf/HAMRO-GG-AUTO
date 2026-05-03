@@ -3,7 +3,6 @@
 
 import { Hero } from '@/components/home/Hero';
 import { VehicleCard } from '@/components/inventory/VehicleCard';
-import { VehicleSkeleton } from '@/components/inventory/VehicleSkeleton';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Shield, Clock, CheckCircle, ArrowRight, Calendar, Loader2 } from 'lucide-react';
@@ -42,7 +41,7 @@ export default function Home() {
     <div className="space-y-24 pb-20">
       <Hero />
 
-      {/* Featured Vehicles - Moved to Top of Page Content */}
+      {/* Featured Vehicles */}
       <section className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 text-center md:text-left gap-6">
           <div className="space-y-4">
@@ -54,25 +53,28 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 min-h-[400px]">
           {isLoading ? (
-            Array.from({ length: 4 }).map((_, i) => (
-              <VehicleSkeleton key={i} />
-            ))
-          ) : (
-            featuredVehicles.map((vehicle, index) => (
-              <VehicleCard key={vehicle.id} vehicle={vehicle} isPriority={index < 4} />
-            ))
-          )}
-          {!isLoading && featuredVehicles.length === 0 && (
-            <div className="col-span-full py-10 text-center text-muted-foreground">
-              Check back soon for new inventory!
+            <div className="col-span-full py-20 flex flex-col items-center justify-center gap-4 bg-gray-50/50 rounded-[3rem] border border-dashed">
+              <Loader2 className="w-10 h-10 animate-spin text-primary" />
+              <p className="text-xl font-medium text-muted-foreground animate-pulse">Syncing showroom inventory...</p>
             </div>
+          ) : (
+            <>
+              {featuredVehicles.map((vehicle, index) => (
+                <VehicleCard key={vehicle.id} vehicle={vehicle} isPriority={index < 4} />
+              ))}
+              {featuredVehicles.length === 0 && (
+                <div className="col-span-full py-10 text-center text-muted-foreground bg-gray-50 rounded-[3rem]">
+                  Check back soon for new inventory!
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
 
-      {/* Trust Badges - Shifted Below Inventory */}
+      {/* Trust Badges - Below Inventory */}
       <section className="max-w-7xl mx-auto px-4 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-gray-50 flex flex-col items-center text-center space-y-6 group hover:-translate-y-2 transition-transform duration-300">

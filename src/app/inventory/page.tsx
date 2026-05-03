@@ -3,10 +3,9 @@
 
 import { useState, useMemo } from 'react';
 import { VehicleCard } from '@/components/inventory/VehicleCard';
-import { VehicleSkeleton } from '@/components/inventory/VehicleSkeleton';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Bike } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import { BRANDS } from '@/lib/constants';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
@@ -47,12 +46,12 @@ export default function InventoryPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 animate-in fade-in duration-500">
       <div className="space-y-2">
-        <h1 className="font-headline font-bold text-3xl md:text-4xl tracking-tight">Our Inventory</h1>
+        <h1 className="font-headline font-bold text-3xl md:text-4xl tracking-tight text-balance">Our Inventory</h1>
         <p className="text-muted-foreground">Find the perfect two-wheeler that fits your budget and lifestyle.</p>
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white p-4 rounded-[2rem] shadow-sm border grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="bg-white p-4 rounded-[2rem] shadow-sm border grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 sticky top-24 z-30">
         <div className="relative col-span-1 md:col-span-1 lg:col-span-2">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input 
@@ -101,11 +100,12 @@ export default function InventoryPage() {
       </div>
 
       {/* Results */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 min-h-[600px]">
         {isLoading ? (
-          Array.from({ length: 8 }).map((_, i) => (
-            <VehicleSkeleton key={i} />
-          ))
+          <div className="col-span-full py-40 flex flex-col items-center justify-center gap-6 bg-gray-50/50 rounded-[3rem] border border-dashed">
+            <Loader2 className="w-12 h-12 animate-spin text-primary" />
+            <p className="text-2xl font-bold text-muted-foreground animate-pulse uppercase tracking-widest">Loading Inventory...</p>
+          </div>
         ) : (
           filteredVehicles.length > 0 ? (
             filteredVehicles.map(vehicle => (
