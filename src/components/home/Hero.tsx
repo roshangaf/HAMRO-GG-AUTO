@@ -27,14 +27,14 @@ export function Hero() {
   };
 
   return (
-    <div className="relative min-h-[85vh] flex items-center overflow-hidden bg-white">
+    <div className="relative min-h-[60vh] lg:min-h-[85vh] flex items-center overflow-hidden bg-white">
       {/* Abstract Background Shapes */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 -skew-x-12 transform origin-top-right hidden lg:block" />
       <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 w-full py-12 lg:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="text-center lg:text-left space-y-10 order-2 lg:order-1">
+          <div className="text-center lg:text-left space-y-10">
             <div className="space-y-6">
               {/* Premium Badge: Desktop Only with Smooth Slide Interaction */}
               <div 
@@ -51,13 +51,13 @@ export function Hero() {
                 KATHMANDU'S #1 SECOND-HAND HUB
               </div>
 
-              <h1 className="font-headline font-bold text-5xl md:text-7xl text-foreground leading-[1.1] tracking-tight text-balance">
+              <h1 className="font-headline font-bold text-4xl md:text-7xl text-foreground leading-[1.1] tracking-tight text-balance">
                 Ride Your <br />
                 <span className="text-primary">Dream</span> With <br className="hidden md:block" />
                 Confidence
               </h1>
               
-              <p className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium">
+              <p className="text-base md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium">
                 Find reliable, inspected, and fairly priced second-hand bikes and scooters. Your journey to a perfect ride starts here.
               </p>
             </div>
@@ -75,38 +75,38 @@ export function Hero() {
               </Button>
             </div>
             
-            <div className="flex flex-wrap justify-center lg:justify-start gap-10 pt-4">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-100 rounded-xl shadow-sm">
-                  <ShieldCheck className="w-8 h-8 text-green-600" />
+            <div className="flex flex-wrap justify-center lg:justify-start gap-6 md:gap-10 pt-4">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="p-2 md:p-3 bg-green-100 rounded-xl shadow-sm">
+                  <ShieldCheck className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
                 </div>
                 <div className="text-left">
-                  <p className="font-bold text-xl leading-none">Certified</p>
-                  <p className="text-sm text-muted-foreground font-medium text-nowrap">Quality Check</p>
+                  <p className="font-bold text-lg leading-none">Certified</p>
+                  <p className="text-xs text-muted-foreground font-medium text-nowrap">Quality Check</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 rounded-xl shadow-sm">
-                  <BadgeCheck className="w-8 h-8 text-blue-600" />
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="p-2 md:p-3 bg-blue-100 rounded-xl shadow-sm">
+                  <BadgeCheck className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
                 </div>
                 <div className="text-left">
-                  <p className="font-bold text-xl leading-none">Transparent</p>
-                  <p className="text-sm text-muted-foreground font-medium text-nowrap">Fair Pricing</p>
+                  <p className="font-bold text-lg leading-none">Transparent</p>
+                  <p className="text-xs text-muted-foreground font-medium text-nowrap">Fair Pricing</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-orange-100 rounded-xl shadow-sm">
-                  <Clock className="w-8 h-8 text-orange-600" />
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="p-2 md:p-3 bg-orange-100 rounded-xl shadow-sm">
+                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-orange-600" />
                 </div>
                 <div className="text-left">
-                  <p className="font-bold text-xl leading-none">Instant</p>
-                  <p className="text-sm text-muted-foreground font-medium text-nowrap">Exchange</p>
+                  <p className="font-bold text-lg leading-none">Instant</p>
+                  <p className="text-xs text-muted-foreground font-medium text-nowrap">Exchange</p>
                 </div>
               </div>
             </div>
           </div>
           
-          <div className="relative group order-1 lg:order-2 max-w-lg mx-auto w-full px-4 lg:px-0">
+          <div className="relative group hidden lg:block max-w-lg mx-auto w-full px-4 lg:px-0">
             <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl group-hover:bg-primary/30 transition-all duration-500" />
             <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-500 transform group-hover:scale-[1.01] aspect-[4/5] lg:min-h-[600px] border-4 border-white/50 bg-gray-50">
               <img 
