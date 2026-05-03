@@ -2,7 +2,7 @@ export const CONTACT_INFO = {
   phone: '9860087161',
   whatsapp: '9808027608',
   email: 'info@ggautonp.com',
-  address: 'Nayabasti, Boudha (Everest Petrol Pump)',
+  address: 'Nayabasti, Boudha',
   mapsLink: 'https://maps.app.goo.gl/HVmWQXMgEefpc5rP7',
   businessName: 'G&G AUTO Enterprises',
   facebook: 'https://www.facebook.com/hamrogngauto',

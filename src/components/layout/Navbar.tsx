@@ -1,4 +1,3 @@
-
 "use client"
 
 import Link from 'next/link';
@@ -32,7 +31,6 @@ export function Navbar() {
   }, [db]);
   const { data: settings } = useDoc(settingsRef);
 
-  // High Fetch Priority Branding: Initial load from constants, then sync with DB
   const logoImage = settings?.logo_url || CONTACT_INFO.logoUrl;
 
   const navLinks = [
