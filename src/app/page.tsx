@@ -42,8 +42,38 @@ export default function Home() {
     <div className="space-y-24 pb-20">
       <Hero />
 
-      {/* Trust Badges */}
-      <section className="max-w-7xl mx-auto px-4 -mt-12 relative z-20">
+      {/* Featured Vehicles - Moved to Top of Page Content */}
+      <section className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 text-center md:text-left gap-6">
+          <div className="space-y-4">
+            <Badge className="bg-primary/10 text-primary border-none font-bold px-4 py-1">HOT ARRIVALS</Badge>
+            <h2 className="font-headline font-bold text-4xl md:text-5xl leading-tight">Featured <br className="hidden md:block" /> Inventory</h2>
+          </div>
+          <Link href="/inventory" className="group flex items-center gap-2 text-primary font-bold text-lg hover:underline transition-all">
+            View Full Inventory <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <VehicleSkeleton key={i} />
+            ))
+          ) : (
+            featuredVehicles.map((vehicle, index) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} isPriority={index < 4} />
+            ))
+          )}
+          {!isLoading && featuredVehicles.length === 0 && (
+            <div className="col-span-full py-10 text-center text-muted-foreground">
+              Check back soon for new inventory!
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Trust Badges - Shifted Below Inventory */}
+      <section className="max-w-7xl mx-auto px-4 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-gray-50 flex flex-col items-center text-center space-y-6 group hover:-translate-y-2 transition-transform duration-300">
             <div className="bg-primary/10 p-5 rounded-3xl group-hover:bg-primary group-hover:text-white transition-colors duration-300 text-primary">
@@ -72,36 +102,6 @@ export default function Home() {
               <p className="text-muted-foreground leading-relaxed">Hassle-free ownership and document transfer handled entirely by our experts.</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Featured Vehicles */}
-      <section className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 text-center md:text-left gap-6">
-          <div className="space-y-4">
-            <Badge className="bg-primary/10 text-primary border-none font-bold px-4 py-1">HOT ARRIVALS</Badge>
-            <h2 className="font-headline font-bold text-4xl md:text-5xl leading-tight">Featured <br className="hidden md:block" /> Inventory</h2>
-          </div>
-          <Link href="/inventory" className="group flex items-center gap-2 text-primary font-bold text-lg hover:underline transition-all">
-            View Full Inventory <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-          {isLoading ? (
-            Array.from({ length: 4 }).map((_, i) => (
-              <VehicleSkeleton key={i} />
-            ))
-          ) : (
-            featuredVehicles.map((vehicle, index) => (
-              <VehicleCard key={vehicle.id} vehicle={vehicle} isPriority={index < 4} />
-            ))
-          )}
-          {!isLoading && featuredVehicles.length === 0 && (
-            <div className="col-span-full py-10 text-center text-muted-foreground">
-              Check back soon for new inventory!
-            </div>
-          )}
         </div>
       </section>
 
