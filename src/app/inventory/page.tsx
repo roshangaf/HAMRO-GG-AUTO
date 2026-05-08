@@ -50,8 +50,8 @@ export default function InventoryPage() {
         <p className="text-muted-foreground">Find the perfect two-wheeler that fits your budget and lifestyle.</p>
       </div>
 
-      {/* Filter Bar */}
-      <div className="bg-white p-4 rounded-[2rem] shadow-sm border grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 sticky top-24 z-30">
+      {/* Filter Bar - Now Stable (Not Sticky) */}
+      <div className="bg-white p-4 rounded-[2rem] shadow-sm border grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <div className="relative col-span-1 md:col-span-1 lg:col-span-2">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input 
