@@ -74,7 +74,6 @@ export default function AddVehiclePage() {
       
       const file = files[i];
       try {
-        // Automatically compress image before storing as base64
         const compressedBase64 = await compressImage(file);
         newImages.push(compressedBase64);
       } catch (err) {
@@ -82,20 +81,17 @@ export default function AddVehiclePage() {
         toast({
           variant: "destructive",
           title: "Upload Error",
-          description: `Could not process ${file.name}. Ensure it's a valid image.`
+          description: `Could not process ${file.name}.`
         });
       }
     }
 
-    // Explicitly update form state to trigger watchers
     form.setValue('imageUrls', newImages, { 
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true 
     });
     setIsCompressing(false);
-    
-    // Reset the input value so the same file can be picked again if removed
     e.target.value = '';
   };
 
@@ -185,7 +181,6 @@ export default function AddVehiclePage() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border space-y-8">
             
-            {/* Image Upload Section */}
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
                 <div className="flex items-center gap-3">
@@ -238,7 +233,7 @@ export default function AddVehiclePage() {
               </div>
               <FormMessage>{form.formState.errors.imageUrls?.message}</FormMessage>
               <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest bg-gray-50 p-3 rounded-xl border">
-                Upload multiple JPEGs or PNGs. Large files are automatically compressed for best performance.
+                Upload up to 12 photos. Images are automatically optimized to ensure fast loading and reliable listing.
               </p>
             </div>
 
@@ -285,7 +280,7 @@ export default function AddVehiclePage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="h-12 rounded-xl bg-gray-50 focus:bg-white transition-colors"><SelectValue placeholder="Select type" /></SelectTrigger>
                       </FormControl>
@@ -305,7 +300,7 @@ export default function AddVehiclePage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">Condition</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="h-12 rounded-xl bg-gray-50 focus:bg-white transition-colors"><SelectValue placeholder="Select condition" /></SelectTrigger>
                       </FormControl>

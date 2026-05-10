@@ -2,9 +2,10 @@
 
 /**
  * Utility for handling client-side image compression.
- * Resizes large images and applies JPEG compression to ensure they stay under storage limits.
+ * Resizes images and applies aggressive JPEG compression to stay under Firestore's 1MB document limit.
+ * Optimized for a maximum of 12 images per document.
  */
-export async function compressImage(file: File, maxWidth = 1200, quality = 0.7): Promise<string> {
+export async function compressImage(file: File, maxWidth = 1000, quality = 0.5): Promise<string> {
   // Validate if the file is actually an image
   if (!file.type.startsWith('image/')) {
     throw new Error('File provided is not an image');

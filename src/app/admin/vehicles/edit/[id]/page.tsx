@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from 'react';
@@ -209,7 +208,6 @@ export default function EditVehiclePage() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-xl border space-y-8">
             
-            {/* Image Upload Section */}
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b pb-4">
                 <div className="flex items-center gap-3">
@@ -262,7 +260,7 @@ export default function EditVehiclePage() {
               </div>
               <FormMessage>{form.formState.errors.imageUrls?.message}</FormMessage>
               <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest bg-gray-50 p-3 rounded-xl border">
-                Upload multiple JPEGs or PNGs. Large files are automatically compressed for best performance.
+                Upload up to 12 photos. Images are automatically optimized to ensure reliable saving within database limits.
               </p>
             </div>
 
